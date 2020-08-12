@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">CalenCon</string>
+    <string name="tab_text_1">EVENTOS</string>
+    <string name="tab_text_2">GRUPOS</string>
+    <string name="tab_text_3">AMIGOS</string>
+    <string name="sign_in">Entrar</string>
+    <string name="sign_up">Cadastrar-se</string>
+    <string name="email">Email</string>
+    <string name="password">Senha</string>
+    <string name="confirm_password">Confirme sua senha</string>
+    <string name="register">Cadastrar</string>
+    <string name="user_name">Nome de usuario</string>
+    <string name="photo">Foto</string>
+
+    <string name="passwords_not_match">Senhas nao coincidem</string>
+    <string name="password_need_at_least_six">Senhas precisam ter no minimo 6 caracteres</string>
+    <string name="successful_sign_up">Usuario criado com sucesso</string>
+    <string name="failed_sign_up">Falha ao criar usuario</string>
+
+    <string name="send">enviar</string>
+
+    <string name="menu_calendar">Calendar</string>
+    <string name="menu_more">More</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+
+    <string name="home_second">Home Second</string>
+
+    <!--  group  -->
+    <string name="group_name">Dê um nome ao grupo</string>
+    <string name="create">Criar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="min_group_name_size">O nome do grupo deve ter no minimo 3 caracteres</string>
+    <string name="min_group_users">Selecione pelo menos um contato para continuar</string>
+    <string name="update_error">Ops! Algo deu errado. Tente novamente mais tarde</string>
+    <string name="add_group_users">Contatos</string>
+
+    <string name="title_activity_menu">MenuActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">CalenCon</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+</resources>

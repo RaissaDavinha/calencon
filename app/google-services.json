@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "871907666807",
+    "firebase_url": "https://calencon.firebaseio.com",
+    "project_id": "calencon",
+    "storage_bucket": "calencon.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:871907666807:android:4954fd9d762c20236b8f72",
+        "android_client_info": {
+          "package_name": "com.example.calencon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "871907666807-efl02egse2iqvu3po64o6fonko2pg0s9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpYhCWRfluTaVmJs8pgB_sGhG7JQ6YH0k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "871907666807-efl02egse2iqvu3po64o6fonko2pg0s9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
