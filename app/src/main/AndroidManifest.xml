@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.calencon">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
 
@@ -44,6 +45,7 @@
             android:name=".presentation.chat.ChatActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".presentation.group.AddContactsActivity" />
+        <activity android:name=".presentation.chat.CalendarActivity" />
     </application>
 
 </manifest>

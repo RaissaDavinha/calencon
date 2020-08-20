@@ -25,7 +25,7 @@ android {
     sourceSets {
         main {
             res {
-                srcDirs 'src/main/res', 'src/main/res-login', 'src/main/res-splash', 'src/main/res-group'
+                srcDirs 'src/main/res', 'src/main/res-login', 'src/main/res-splash', 'src/main/res-group', 'src/main/res-calendar'
             }
         }
     }
@@ -34,6 +34,7 @@ android {
 
 
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -106,4 +107,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.xwray:groupie:2.1.0'
+
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.0.10'
+    implementation 'com.github.kizitonwose:CalendarView:0.4.3'
 }

@@ -1,10 +1,15 @@
 package com.example.calencon.presentation.chat
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.calencon.R
 import com.example.calencon.data.*
 import com.example.calencon.presentation.chat.adapter.ChatAdapter
+import com.example.calencon.presentation.group.GroupItem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
@@ -55,6 +60,20 @@ class ChatActivity : AppCompatActivity() {
             }
 
         topAppBar.setNavigationOnClickListener { finish() }
+        topAppBar.setOnMenuItemClickListener { item: MenuItem? ->
+            when(item?.itemId) {
+                R.id.chat_to_calendar -> {
+                    val intent = Intent(baseContext, CalendarActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.more -> {
+                    true
+                }
+                else -> false
+            }
+        }
+
         btn_send.setOnClickListener {
             sendMessage()
         }
@@ -62,8 +81,7 @@ class ChatActivity : AppCompatActivity() {
 
     private fun setAdapter(isGroup: Boolean) {
         FirebaseAuth.getInstance().uid?.let { uid ->
-            mAdapter =
-                ChatAdapter(uid)
+            mAdapter = ChatAdapter(uid)
             mAdapter.setIsGroup(isGroup)
             list_chat.adapter = mAdapter
         }
