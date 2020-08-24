@@ -3,6 +3,7 @@ package com.example.calencon.presentation.chat
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -10,19 +11,23 @@ import com.example.calencon.R
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.CalendarMonth
 import com.kizitonwose.calendarview.model.DayOwner
-import com.kizitonwose.calendarview.model.InDateStyle
 import com.kizitonwose.calendarview.ui.DayBinder
 import com.kizitonwose.calendarview.ui.MonthHeaderFooterBinder
 import com.kizitonwose.calendarview.ui.ViewContainer
 import kotlinx.android.synthetic.main.calendar_activity.*
 import kotlinx.android.synthetic.main.calendar_activity.topAppBar
+import kotlinx.android.synthetic.main.calendar_day_layout.*
+import java.time.LocalDate
 import java.time.YearMonth
+import java.time.format.DateTimeFormatter
 import java.time.temporal.WeekFields
 import java.util.*
 
 class CalendarActivity : AppCompatActivity() {
     val boundDays = mutableSetOf<CalendarDay>()
     var boundHeaderMonth: CalendarMonth? = null
+    private var selectedDate: LocalDate? = null
+    private val monthTitleFormatter = DateTimeFormatter.ofPattern("MMMM")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +42,8 @@ class CalendarActivity : AppCompatActivity() {
                 container.textView.text = day.date.dayOfMonth.toString()
                 boundDays.add(day)
                 if (day.owner == DayOwner.THIS_MONTH) {
-                    container.textView.setTextColor(ContextCompat.getColor(baseContext, R.color.white))
+                    container.textView.setTextColor(ContextCompat.getColor(baseContext, R.color.black))
+                    container.binding.setBackgroundResource(if (selectedDate == day.date) R.drawable.selected_day else 0)
                 } else {
                     container.textView.setTextColor(ContextCompat.getColor(baseContext, R.color.blue_gray))
                 }
@@ -50,17 +56,18 @@ class CalendarActivity : AppCompatActivity() {
         val firstDayOfWeek = WeekFields.of(Locale.getDefault()).firstDayOfWeek
         calendarView.setup(firstMonth, lastMonth, firstDayOfWeek)
         calendarView.scrollToMonth(currentMonth)
-        calendarView.updateMonthConfiguration(
-            inDateStyle = InDateStyle.ALL_MONTHS,
-            maxRowCount = 1,
-            hasBoundaries = false
-        )
 
         calendarView.monthHeaderBinder = object : MonthHeaderFooterBinder<ViewContainer> {
             override fun create(view: View) = ViewContainer(view)
             override fun bind(container: ViewContainer, month: CalendarMonth) {
                 boundHeaderMonth = month
             }
+        }
+
+        calendarView.monthScrollListener = { month ->
+            val title = monthTitleFormatter.format(month.yearMonth) + " " + month.yearMonth.year
+            month_year_text.text = title
+
         }
 
         topAppBar.setNavigationOnClickListener { finish() }
@@ -81,7 +88,9 @@ class CalendarActivity : AppCompatActivity() {
 
 class DayViewContainer(view: View) : ViewContainer(view) {
     val textView = view.findViewById<TextView>(R.id.calendarDayText)
+    val binding = view.findViewById<FrameLayout>(R.id.dayLayout)
 
-    // With ViewBinding
-    // val textView = CalendarDayLayoutBinding.bind(view).calendarDayText
+    init {
+
+    }
 }
