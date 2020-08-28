@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">CalenCon</string>
+    <string name="API_KEY">871907666807-ki12a3e13rfvkt3j94gri008gd8375r9.apps.googleusercontent.com</string>
     <string name="tab_text_1">EVENTOS</string>
     <string name="tab_text_2">GRUPOS</string>
     <string name="tab_text_3">AMIGOS</string>
