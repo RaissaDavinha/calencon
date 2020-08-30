@@ -8,21 +8,19 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.Menu
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.calencon.R
-import com.example.calencon.data.GROUP_KEY
-import com.example.calencon.data.Group
+import com.example.calencon.data.*
 import com.example.calencon.mechanics.now
 import com.example.calencon.presentation.group.AddContactsActivity
 import com.example.calencon.presentation.group.CreateGroupDialog
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.register_activity.*
 import me.everything.providers.android.calendar.CalendarProvider
 import java.util.concurrent.TimeUnit
-
 
 class HomeActivity : AppCompatActivity() {
     var createGroupDialog: CreateGroupDialog? = null
@@ -44,9 +42,6 @@ class HomeActivity : AppCompatActivity() {
         if (ActivityCompat.checkSelfPermission(baseContext, Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CALENDAR), 1)
         }
-
-        calendarProvider = CalendarProvider(baseContext)
-        calendarProvider.calendars.list
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -56,12 +51,9 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun createGroup() {
-        createGroupDialog = CreateGroupDialog(
-            this,
-            listener = object : CreateGroupDialog.OnOptionClickListener {
+        createGroupDialog = CreateGroupDialog(this, listener = object : CreateGroupDialog.OnOptionClickListener {
                 override fun onDoneClicked(groupName: String) {
-                    val uid =
-                        groupName + FirebaseAuth.getInstance().currentUser?.uid + now(TimeUnit.SECONDS).toString()
+                    val uid = groupName + FirebaseAuth.getInstance().currentUser?.uid + now(TimeUnit.SECONDS).toString()
                     val newGroup = Group(uid, groupName, selectedUri, null)
                     val intent = Intent(baseContext, AddContactsActivity::class.java)
                     intent.putExtra(GROUP_KEY, newGroup)
@@ -90,7 +82,7 @@ class HomeActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 20) {
             selectedUri = data?.data
-            selectedUri?.let{
+            selectedUri?.let {
                 val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, it)
                 photo_img.setImageBitmap(bitmap)
                 select_photo_button.visibility = View.GONE
@@ -105,8 +97,29 @@ class HomeActivity : AppCompatActivity() {
             1 -> {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
+                    val uid = FirebaseAuth.getInstance().uid!!
+                    calendarProvider = CalendarProvider(baseContext)
+                    calendarProvider.calendars.list.forEach { calendar ->
+                        calendarProvider.getEvents(calendar.id).list.forEach { event ->
+                            val item = Event(
+                                user_id = uid,
+                                calendar_id = calendar.id,
+                                dtstart = event.dTStart,
+                                dtend = event.dTend,
+                                title = event.title,
+                                duration = event.duration,
+                                all_day = event.allDay,
+                                rrule = event.rRule ?: "",
+                                rdate = event.rDate ?: "",
+                                availability = event.availability
+                            )
+
+                            FirebaseFirestore.getInstance().collection(USERS_DOC)
+                                .document(uid)
+                                .collection(CALENDAR_DOC)
+                                .add(item)
+                        }
+                    }
                 } else {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.

@@ -18,6 +18,7 @@ class AddContactsActivity : AppCompatActivity() {
     private var auth: FirebaseAuth = FirebaseAuth.getInstance()
     private var selectedContacts = mutableListOf<User>()
     private lateinit var group: Group
+    private val firebase = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +37,7 @@ class AddContactsActivity : AppCompatActivity() {
     }
 
     private fun fetchUsers() {
-        FirebaseFirestore.getInstance().collection(USERS_DOC)
+        firebase.collection(USERS_DOC)
             .addSnapshotListener { snapshot, exception ->
                 exception?.let { return@addSnapshotListener }
                 snapshot?.let {
@@ -54,6 +55,7 @@ class AddContactsActivity : AppCompatActivity() {
         contactsAdapter = AddContactsAdapter()
         contactsAdapter.setOnItemClickListener{ user ->
             selectedContacts.add(user)
+            //TODO add remove option
         }
         contacts_recycler_view.adapter = contactsAdapter
         contacts_recycler_view.layoutManager = LinearLayoutManager(this)
@@ -62,11 +64,12 @@ class AddContactsActivity : AppCompatActivity() {
     private fun addContactsAndFinish() {
         if (selectedContacts.size >= 1) {
             group.usersList = selectedContacts
-            FirebaseFirestore.getInstance()
-                .collection(GROUP_DOC)
+            firebase.collection(GROUP_DOC)
                 .document(group.id)
                 .set(group)
                 .addOnSuccessListener {
+                    getEvents()
+
                     val intent = Intent(baseContext, ChatActivity::class.java)
                     intent.putExtra(GROUP_KEY, group)
                     intent.putExtra(CHAT_TYPE, ChatType.GROUP)
@@ -79,6 +82,27 @@ class AddContactsActivity : AppCompatActivity() {
             finish()
         } else  {
             Toast.makeText(baseContext, R.string.min_group_users, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun getEvents() {
+        selectedContacts.forEach { user ->
+            firebase.collection(USERS_DOC)
+                .document(user.uid)
+                .collection(CALENDAR_DOC)
+                .addSnapshotListener { value, error ->
+                    error?.let { return@addSnapshotListener }
+                    value?.let {
+                        for (doc in value) {
+                            val event = doc.toObject(Event::class.java)
+
+                            firebase.collection(GROUP_DOC)
+                                .document(group.id)
+                                .collection(CALENDAR_DOC)
+                                .add(event)
+                        }
+                    }
+                }
         }
     }
 }

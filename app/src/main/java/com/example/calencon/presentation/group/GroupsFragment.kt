@@ -18,21 +18,17 @@ import kotlinx.android.synthetic.main.groups_fragment.*
 class GroupsFragment : Fragment() {
     private lateinit var contactsAdapter: GroupAdapter<ViewHolder>
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.groups_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setAdapter()
-        fetchUsers()
+        fetchGroups()
     }
 
-    private fun fetchUsers() {
+    private fun fetchGroups() {
         FirebaseFirestore.getInstance().collection(GROUP_DOC)
             .addSnapshotListener { snapshot, exception ->
                 exception?.let { return@addSnapshotListener }
