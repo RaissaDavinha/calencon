@@ -20,8 +20,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.register_activity.*
 import me.everything.providers.android.calendar.CalendarProvider
-import java.util.*
-import java.util.concurrent.ThreadLocalRandom
 import java.util.concurrent.TimeUnit
 
 class HomeActivity : AppCompatActivity() {
@@ -129,52 +127,5 @@ class HomeActivity : AppCompatActivity() {
                 return
             }
         }
-    }
-
-    private fun generateEvents() {
-        val uid = FirebaseAuth.getInstance().uid!!
-
-        for (i in 0..30) {
-            val dtStart = createEventDatabase()
-
-            val item = Event(
-                user_id = uid,
-                calendar_id = 1,
-                dtstart = dtStart,
-                dtend = createEndEvent(dtStart),
-                title = "evento $i",
-                duration = null,
-                all_day = false,
-                rrule = "",
-                rdate = "",
-                availability = 0
-            )
-
-            FirebaseFirestore.getInstance().collection(USERS_DOC)
-                .document(uid)
-                .collection(CALENDAR_DOC)
-                .add(item)
-        }
-    }
-
-    private fun createEventDatabase(): Long {
-        val aDay = TimeUnit.DAYS.toMillis(1)
-        val now = Date().time
-        val threeMonthsInFuture = Date(now + aDay * 92)
-        val tenDaysAgo = Date(now - aDay * 10)
-        return between(tenDaysAgo, threeMonthsInFuture)
-    }
-
-    private fun createEndEvent(startDate: Long): Long {
-        val aHour = TimeUnit.HOURS.toMillis(1)
-        return startDate + aHour
-    }
-
-    private fun between(startInclusive: Date, endExclusive: Date): Long {
-        val startMillis = startInclusive.time
-        val endMillis = endExclusive.time
-        return ThreadLocalRandom
-            .current()
-            .nextLong(startMillis, endMillis)
     }
 }
