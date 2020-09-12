@@ -33,13 +33,13 @@ class GeneticAlgorithm {
     private var currentGeneration = 0
 
     // Initializes genetic algorithm
-    fun GeneticAlgorithm(numberOfChromosomes: Int, replaceByGeneration: Int, trackBest: Int) {
+    fun geneticAlgorithm(numberOfChromosomes: Int, replaceByGeneration: Int, trackBest: Int) {
         // Set up options for the algorithm
         // Generate initial population
     }
 
     // Frees used resources
-    fun ClearGeneticAlgorithm() {
+    fun clearGeneticAlgorithm() {
 
     }
 
@@ -49,15 +49,15 @@ class GeneticAlgorithm {
     }
 
     // Stops execution of algorithm
-    fun Stop() {
+    fun stop() {
 
     }
 
     // Returns pointer to best chromosomes in population
-    fun GetBestChromosome() {
+    fun getBestChromosome() {
 
     }
 
     // Returns current generation
-    fun GetCurrentGeneration() = currentGeneration
+    fun getCurrentGeneration() = currentGeneration
 }

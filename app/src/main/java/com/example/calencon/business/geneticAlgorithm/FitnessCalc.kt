@@ -1,92 +1,73 @@
 package com.example.calencon.business.geneticAlgorithm
 
-import com.example.calencon.data.Event
 import java.util.*
-import java.util.concurrent.ThreadLocalRandom
 import java.util.concurrent.TimeUnit
-import kotlin.time.days
+import kotlin.random.Random
+import kotlin.random.nextInt
 
 class FitnessCalc {
-    // Random generator
-    var random = Random()
-
     companion object {
-        // Number of specimens in the population
         var populationSize = 0
-
-        // Number of specimens in the selection
         var selectionSize = 0
-
-        // Power of mutations
-        // 0 - no mutations
-        // 100 - mutations up to whole gene value
-        // 200 - mutations up to twice gene value
-        var MaxMutationPercent = 0.0
-
-        // Likelyhood of mutation
-        // 0 - no mutations, 100 - mutations for all cases
         var mutationProbability = 0
 
-        // Maximal affinity that is considered
-        // for the solution found
+        // Maximal affinity that is considered for the solution found
         var epsilon = 0.0
 
-        // Number of crossover points of parent's class tables
-        var numberOfCrossoverPoints: Int = 0
-
-        // Probability that crossover will occur
-        var crossoverProbability = 0
-
-        // Environment
-        //list of previous events
-        var adaptationEnvironment = mutableListOf<Event>()
+        // List of previous events
+        var adaptationEnvironment = mutableListOf<Specimen>()
     }
 
     fun setStaticObjects(
         population: Int,
-        CrossoverPoints: Int,
-        maxMu: Double,
         muSize: Int,
-        crossProbability: Int,
         mProbability: Int,
         selection: Int,
-        environment: List<Event>,
+        environment: List<Specimen>,
         maxAffinity: Double
     ) {
-
         populationSize = population
-        numberOfCrossoverPoints = CrossoverPoints
         mutationProbability = muSize
-        crossoverProbability = crossProbability
         mutationProbability = mProbability
-        MaxMutationPercent = maxMu
         selectionSize = selection
         adaptationEnvironment = environment.toMutableList()
         epsilon = maxAffinity
     }
 
-    fun fitnessScore(event: Event): Float {
+    fun fitnessScore(event: Specimen): Float {
+
+
         return 0f
     }
 
     // Select the best specimens from the population
-    fun selectBest() {
-        //Method Select is implemented by performing two main actions.
-        //First of all, the method sorts the population in way the array contains the best specimens
-        // at the beginning and the worst specimens at the end. At the second step, the best
-        // specimens are being copied to selection for future calculations
+    private fun selectBest(population: MutableList<Specimen>): List<Specimen> {
+        sort(population)
+
+        return population.take(selectionSize)
     }
 
-    // Sort the population by affinity
-    fun sort() {}
+    // Sort population by score
+    private fun sort(population: MutableList<Specimen>) {
+        var temp: Specimen
 
-    //generate initial base
-    //gerar apenas datas futuras, com horarios entre 8-21h
-    private fun generateInitialPopulation() {
+        for (i in 0 until populationSize) {
+            for (j in 0 until populationSize) {
+                if (population[i].getFitnessScore() < population[j].getFitnessScore()) {
+                    temp = population[i]
+                    population[i] = population[j]
+                    population[j] = temp
+                }
+            }
+        }
+    }
+
+    // Generate initial base
+    fun generateInitialPopulation() {
         val population = mutableListOf<Specimen>()
 
         for (i in 0..populationSize) {
-            val dtStart = createEventDatabase()
+            val dtStart = createStartEvent()
 
             val item = Specimen(
                 userId = "",
@@ -107,58 +88,131 @@ class FitnessCalc {
         }
     }
 
-    private fun createEventDatabase(): Long {
+    // Generate only future dates, with hour between 8-21h, up tp 3 months in the future
+    private fun createStartEvent(): Long {
         val aDay = TimeUnit.DAYS.toMillis(1)
-        val now = Date().time
-        val threeMonthsInFuture = Date(now + aDay * 92)
-        return between(Date(), threeMonthsInFuture)
+        val now = Calendar.getInstance().timeInMillis
+
+        val threeMonthsInFuture = Calendar.getInstance()
+        threeMonthsInFuture.timeInMillis = (now + aDay * 92)
+        return between(Calendar.getInstance(), threeMonthsInFuture)
     }
 
-    //three hours default
+    // One hour default
     private fun createEndEvent(startDate: Long): Long {
-        val aHour = TimeUnit.HOURS.toMillis(3)
+        val aHour = TimeUnit.HOURS.toMillis(1)
         return startDate + aHour
     }
 
-    private fun between(startInclusive: Date, endExclusive: Date): Long {
-        val rand = kotlin.random.Random(System.nanoTime())
+    private fun between(startInclusive: Calendar, endExclusive: Calendar): Long {
         val newDate = Calendar.getInstance()
 
         do {
-            val randNumber = (0..1).random(rand)
-            val hour = (8..21).random(rand)
+            val randNumber = Random.nextInt(0..1)
+            val hour = Random.nextInt(8..21)
             val minute = if (randNumber == 0) 0 else 30
-            val day = (1..28).random(rand)
-            val month = (startInclusive.month..endExclusive.month).random(rand)
-            newDate.set(startInclusive.year, month, day, hour, minute)
-        } while (newDate.timeInMillis < startInclusive.time)
+            val day = Random.nextInt(1..28)
+            val month = Random.nextInt(
+                range = startInclusive.get(Calendar.DAY_OF_MONTH)..endExclusive.get(
+                    Calendar.MONTH
+                )
+            )
+            newDate.set(startInclusive.get(Calendar.YEAR), month, day, hour, minute)
+        } while (newDate.timeInMillis < startInclusive.timeInMillis)
 
         return newDate.timeInMillis
     }
 
     // Reproduce new specimen on base of two parents
-    fun reproduceNew(a: Specimen, b: Specimen): Specimen? {
+    private fun produceNew(a: Specimen, b: Specimen): Specimen {
         val s = Specimen("", a.getSpecimen().calendar_id)
+        val mp = Random.nextInt(101)
 
-        // Iherit genes as the average oh the parents' genes
-//        s.Genes.get(0) = (a.Genes.get(0) + b.Genes.get(0)) / 2
+        when (Random.nextInt(101)) {
+            // 45%
+            in (0..45) -> {
+                s.setStartHour((a.getHour() + b.getHour()) / 2)
+            }
+            // 40%
+            in (46..85) -> {
+                s.setDay((a.getDay() + b.getDay()) / 2)
+            }
+            // 15%
+            in (86..100) -> {
+                s.setMonth((a.getMonth() + b.getMonth()) / 2)
+            }
+        }
+        s.setDuration(TimeUnit.HOURS.toMillis(1))           //update end event date
 
-        // Mutate if likelyhoo allows
-//        val ml: Int = rnd.nextInt(101)
-//        if (ml <= MutationLikelyhoodPercent) {
-//            Mutate(s)
-//        }
+        // Mutate if probability allows
+        if (mp <= mutationProbability) {
+            mutate(s)
+        }
 
         // Calculate Affinity for new specimen
         s.setFitnessScore()
         return s
-
-        //After creating, the gene mutates (or not) according to the values of MutationLikelyhoodPercent and MaxMutationPercent.
     }
 
     // Mutate the specimen
-    fun mutate() {}
+    private fun mutate(a: Specimen) {
+
+        when (Random.nextInt(101)) {
+            // 45%
+            in (0..45) -> {
+                val hour = Random.nextInt(8..21)
+                val minute = if (Random.nextInt(0..1) == 0) 0 else 30
+                a.setStartHour(hour, minute)
+            }
+            // 40%
+            in (46..85) -> {
+                val day = Random.nextInt(1..28)
+                a.setDay(day)
+            }
+            // 15%
+            in (86..100) -> {
+                val threeMonthsInFuture = Calendar.getInstance()
+                val aDay = TimeUnit.DAYS.toMillis(1)
+                val now = Calendar.getInstance().timeInMillis
+                threeMonthsInFuture.timeInMillis = (now + aDay * 92)
+
+                val month = Random.nextInt(
+                    range = Calendar.getInstance()
+                        .get(Calendar.DAY_OF_MONTH)..threeMonthsInFuture.get(
+                        Calendar.MONTH
+                    )
+                )
+                a.setMonth(month)
+            }
+        }
+
+        a.setDuration(TimeUnit.HOURS.toMillis(1))
+    }
 
     // Generate population by reproduction of selection
-    fun generate() {}
+    fun generate(population: MutableList<Specimen>): MutableList<Specimen> {
+        val newGeneration = mutableListOf<Specimen>( )
+
+        // Copy best instances from the selection to keep them in new generation
+        newGeneration.addAll(selectBest(population))
+
+        // Creates new specimens by reproducing two parents
+        // Parents are selected randomly from the selection.
+        var childIndex = selectionSize
+        var parent1Index: Int
+        var parent2Index: Int
+
+        while (childIndex < populationSize) {
+            do {
+                parent1Index = Random.nextInt(population.size)
+                parent2Index = Random.nextInt(population.size)
+            } while (parent1Index == parent2Index)
+
+            // Creates new specimen
+            newGeneration[childIndex] = produceNew(population[parent1Index], population[parent2Index])
+            childIndex++
+        }
+
+        return newGeneration
+    }
 }
