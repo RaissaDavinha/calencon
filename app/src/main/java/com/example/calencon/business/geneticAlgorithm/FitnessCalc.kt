@@ -1,5 +1,7 @@
 package com.example.calencon.business.geneticAlgorithm
 
+import com.example.calencon.data.WeekScore
+import java.time.DayOfWeek
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random
@@ -34,15 +36,49 @@ class FitnessCalc {
         epsilon = maxAffinity
     }
 
-    fun fitnessScore(event: Specimen): Float {
+    fun fitnessScore(event: Specimen): Double {
+        //receber adaptation environment .orderBy("dtstart", Query.Direction.ASCENDING)
+        //ignora todos os eventos antes da data atual
+        //verificar todos os eventos proximos que comecam antes do specime, se este esta entre o dtstart e o dtend
+        //verificar evento logo apos o specime, se comeca antes do specime acabar
+        val weekDayScore: Double
+        var eventOverlapScore = 1.0
+        val environment = mutableListOf<Specimen>()
+        val day = Calendar.getInstance()
 
+        if(!adaptationEnvironment.isNullOrEmpty()) {
+            environment.addAll(adaptationEnvironment.takeLastWhile { it.getDtStart() > Calendar.getInstance().timeInMillis })
+        }
 
-        return 0f
+        if(!environment.isNullOrEmpty()) {
+            environment.find { it.getDtStart() < event.getDtStart()}?.let {
+                if (it.getDtEnd() > event.getDtStart() && eventOverlapScore > 0) {
+                    eventOverlapScore -= 0.5
+                }
+            }
+        }
+
+        //verificar dia da semana
+        day.timeInMillis = event.getDtStart()
+
+        weekDayScore = when(day.get(Calendar.DAY_OF_WEEK)) {
+            DayOfWeek.MONDAY.value -> WeekScore.MONDAY.dayScore
+            DayOfWeek.TUESDAY.value -> WeekScore.TUESDAY.dayScore
+            DayOfWeek.WEDNESDAY.value -> WeekScore.WEDNESDAY.dayScore
+            DayOfWeek.THURSDAY.value -> WeekScore.THURSDAY.dayScore
+            DayOfWeek.FRIDAY.value -> WeekScore.FRIDAY.dayScore
+            DayOfWeek.SATURDAY.value -> WeekScore.SATURDAY.dayScore
+            DayOfWeek.SUNDAY.value -> WeekScore.SUNDAY.dayScore
+            else -> 0.0
+        }
+
+        return weekDayScore + eventOverlapScore
     }
 
     // Select the best specimens from the population
     private fun selectBest(population: MutableList<Specimen>): List<Specimen> {
         sort(population)
+        //adicionar proximmidade do evento ao calculo
 
         return population.take(selectionSize)
     }

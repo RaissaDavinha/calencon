@@ -12,38 +12,6 @@ class Specimen(userId: String = "", calendarId: Long, eventTitle: String = "", d
     private val individual = Event(userId, calendarId, eventTitle, dtStart, dtEnd, eventDuration, allDay, rRule, rDate, userAvailability)
     private var fitnessScore = 0f
 
-    //number of 30-minute blocks past 12am.
-    private var startTime = startTimeToBlock()
-    private var endTime = endTimeToBlock()
-
-    private fun startTimeToBlock(): Int {
-        val date = Calendar.getInstance()
-        date.timeInMillis = individual.dtstart
-
-        //hour of day = 24h type
-        var startTimeBlock = date.get(Calendar.HOUR_OF_DAY) * 2
-        if (date.get(Calendar.MINUTE) >= 30) startTimeBlock++
-
-        return startTimeBlock
-    }
-
-    private fun endTimeToBlock(): Int {
-        val date = Calendar.getInstance()
-
-        if (individual.dtend != null) {
-            date.timeInMillis = individual.dtend!!
-        } else {
-            val aHour = TimeUnit.HOURS.toMillis(1)
-            date.timeInMillis = individual.dtstart + aHour
-        }
-
-        //hour of day = 24h type
-        var endTimeBlock = date.get(Calendar.HOUR_OF_DAY) * 2
-        if (date.get(Calendar.MINUTE) >= 30) endTimeBlock++
-
-        return endTimeBlock
-    }
-
     fun getSpecimen() = individual
 
     fun getFitnessScore() = fitnessScore
@@ -65,10 +33,6 @@ class Specimen(userId: String = "", calendarId: Long, eventTitle: String = "", d
         cal.timeInMillis = individual.dtstart
         return cal.get(Calendar.HOUR_OF_DAY)
     }
-
-    fun getstartTime() = startTime
-
-    fun getendTime() = endTime
 
     fun getYear(): Int {
         val cal = Calendar.getInstance()
@@ -92,15 +56,12 @@ class Specimen(userId: String = "", calendarId: Long, eventTitle: String = "", d
 
     fun setDtStart(timeInMillis: Long) {
         individual.dtstart = timeInMillis
-        startTime = startTimeToBlock()
     }
 
     fun setDtStart(year: Int, month: Int, day: Int, hour: Int) {
         val cal = Calendar.getInstance()
         cal.set(year, month, day, hour, 0)
         individual.dtstart = cal.timeInMillis
-
-        startTime = startTimeToBlock()
     }
 
     fun setDay(day: Int) {
@@ -129,8 +90,6 @@ class Specimen(userId: String = "", calendarId: Long, eventTitle: String = "", d
         cal.timeInMillis = individual.dtstart
         cal.set(Calendar.HOUR_OF_DAY, hour)
         individual.dtstart = cal.timeInMillis
-
-        startTime = startTimeToBlock()
     }
 
     fun setStartHour(hour: Int, minute:Int) {
@@ -139,13 +98,10 @@ class Specimen(userId: String = "", calendarId: Long, eventTitle: String = "", d
         cal.set(Calendar.HOUR_OF_DAY, hour)
         cal.set(Calendar.MINUTE, minute)
         individual.dtstart = cal.timeInMillis
-
-        startTime = startTimeToBlock()
     }
 
     fun setDuration(durationInMillis: Long) {
         individual.dtend = individual.dtstart + durationInMillis
-        endTime = endTimeToBlock()
     }
 
     fun setFitnessScore() {
