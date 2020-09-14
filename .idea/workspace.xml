@@ -14,13 +14,24 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="Current_Selection" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1f937f56-e03d-4e69-9446-8fdca6530765" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/calencon/business/geneticAlgorithm/FitnessCalc.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/calencon/business/geneticAlgorithm/FitnessCalc.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/calencon/business/geneticAlgorithm/FitnessCalc.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/calencon/business/geneticAlgorithm/GACalc.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/calencon/business/geneticAlgorithm/GeneticAlgorithm.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/calencon/business/geneticAlgorithm/GeneticAlgorithm.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/calencon/business/geneticAlgorithm/Specimen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/calencon/business/geneticAlgorithm/Specimen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/calencon/data/Event.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/calencon/data/Event.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/calencon/presentation/chat/ChatActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/calencon/presentation/chat/ChatActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/calencon/presentation/group/AddContactsActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/calencon/presentation/group/AddContactsActivity.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,7 +110,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="SHOW_ALL_PROCESSES" value="false" />
     <property name="android.sdk.path" value="$USER_HOME$/Android/Sdk" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../qcx_android" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Dependencies" />
     <property name="project.structure.proportion" value="0.17" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -235,6 +246,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="640" y="248" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1600009394941" />
+    <state x="527" y="445" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1600098790287">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="527" y="445" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1600098790287" />
     <state x="424" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1599048921347">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -243,10 +258,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="704" y="172" width="515" height="695" key="#org.jetbrains.kotlin.idea.refactoring.move.moveDeclarations.ui.MoveKotlinTopLevelDeclarationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1598558688137" />
-    <state x="909" y="5" width="669" height="1035" key="#xdebugger.evaluate" timestamp="1598749587664">
+    <state x="909" y="5" width="669" height="1035" key="#xdebugger.evaluate" timestamp="1600125291258">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="909" y="5" width="669" height="1035" key="#xdebugger.evaluate/0.0.1920.1040@0.0.1920.1040" timestamp="1598749587664" />
+    <state x="909" y="5" width="669" height="1035" key="#xdebugger.evaluate/0.0.1920.1040@0.0.1920.1040" timestamp="1600125291258" />
     <state x="540" y="275" key="AndroidCreateResourceDirectoryDialog" timestamp="1597888863113">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -259,26 +274,26 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="564" y="279" key="AndroidProcessChooserDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1598565175166" />
-    <state x="817" y="260" key="FileChooserDialogImpl" timestamp="1599837439538">
+    <state x="817" y="260" key="FileChooserDialogImpl" timestamp="1600089863830">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="817" y="260" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1599837439538" />
-    <state width="1877" height="204" key="GridCell.Tab.0.bottom" timestamp="1598820560617">
+    <state x="817" y="260" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1600089863830" />
+    <state width="1877" height="284" key="GridCell.Tab.0.bottom" timestamp="1600125962694">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="204" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1598820560617" />
-    <state width="1877" height="204" key="GridCell.Tab.0.center" timestamp="1598820560617">
+    <state width="1877" height="284" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1600125962694" />
+    <state width="1877" height="284" key="GridCell.Tab.0.center" timestamp="1600125962694">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="204" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1598820560617" />
-    <state width="1877" height="204" key="GridCell.Tab.0.left" timestamp="1598820560617">
+    <state width="1877" height="284" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1600125962694" />
+    <state width="1877" height="284" key="GridCell.Tab.0.left" timestamp="1600125962694">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="204" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1598820560617" />
-    <state width="1877" height="204" key="GridCell.Tab.0.right" timestamp="1598820560617">
+    <state width="1877" height="284" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1600125962694" />
+    <state width="1877" height="284" key="GridCell.Tab.0.right" timestamp="1600125962694">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="204" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1598820560617" />
+    <state width="1877" height="284" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1600125962694" />
     <state width="1877" height="204" key="GridCell.Tab.1.bottom" timestamp="1598820560617">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

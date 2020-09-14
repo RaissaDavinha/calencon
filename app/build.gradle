@@ -73,10 +73,6 @@ dependencies {
     implementation "androidx.activity:activity-ktx:$activity_version"
 
     //Google calendar
-//    implementation 'com.google.android.gms:play-services-auth:18.1.0'
-//    implementation 'com.google.api-client:google-api-client-android:1.23.0'
-//    implementation 'com.google.oauth-client:google-oauth-client-jetty:1.31.0'
-//    implementation 'com.google.apis:google-api-services-calendar:v3-rev305-1.23.0'
     implementation 'me.everything:providers-android:1.0.1'
 
     //firebase

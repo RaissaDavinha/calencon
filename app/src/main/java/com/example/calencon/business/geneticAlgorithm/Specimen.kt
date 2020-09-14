@@ -2,15 +2,14 @@ package com.example.calencon.business.geneticAlgorithm
 
 import com.example.calencon.data.Event
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 //Specimen = one solution
 //Specimens are represented by the Event to be created
 class Specimen(userId: String = "", calendarId: Long, eventTitle: String = "", dtStart: Long = 0, dtEnd: Long? = 0,
-               eventDuration: String? = "", allDay: Boolean? = false, rRule: String? = "", rDate: String? = "", userAvailability: Int? = 0){
+               eventDuration: String? = "", allDay: Boolean? = false, rRule: String? = "", rDate: String? = "", userAvailability: Int? = 0) {
 
     private val individual = Event(userId, calendarId, eventTitle, dtStart, dtEnd, eventDuration, allDay, rRule, rDate, userAvailability)
-    private var fitnessScore = 0f
+    private var fitnessScore = 0.0
 
     fun getSpecimen() = individual
 
@@ -105,6 +104,10 @@ class Specimen(userId: String = "", calendarId: Long, eventTitle: String = "", d
     }
 
     fun setFitnessScore() {
-        fitnessScore = FitnessCalc().fitnessScore(this)
+        fitnessScore = GACalc().fitnessScore(this)
+    }
+
+    fun addFitnessScore(value: Double) {
+        fitnessScore += value
     }
 }

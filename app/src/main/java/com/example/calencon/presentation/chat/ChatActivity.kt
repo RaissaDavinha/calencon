@@ -1,15 +1,13 @@
 package com.example.calencon.presentation.chat
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import com.example.calencon.R
+import com.example.calencon.business.geneticAlgorithm.GeneticAlgorithm
 import com.example.calencon.data.*
 import com.example.calencon.presentation.chat.adapter.ChatAdapter
-import com.example.calencon.presentation.group.GroupItem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
@@ -25,6 +23,7 @@ class ChatActivity : AppCompatActivity() {
     private var mMe: User? = null
     private var mGroup: Group? = null
     private lateinit var chatType: ChatType
+    private val GA = GeneticAlgorithm()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +46,9 @@ class ChatActivity : AppCompatActivity() {
                         }
                         setAdapter(true)
                         fetchGroupsMessages()
+                        mGroup?.let {
+                            GA.initializeGeneticAlgorithm(it.id)
+                        }
                     }
                     ChatType.SINGLE -> {
                         intent.extras?.getParcelable<User>(USER_KEY)?.let {

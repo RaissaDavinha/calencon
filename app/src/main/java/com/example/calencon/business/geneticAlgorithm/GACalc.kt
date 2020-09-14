@@ -7,14 +7,11 @@ import java.util.concurrent.TimeUnit
 import kotlin.random.Random
 import kotlin.random.nextInt
 
-class FitnessCalc {
+class GACalc {
     companion object {
         var populationSize = 0
         var selectionSize = 0
         var mutationProbability = 0
-
-        // Maximal affinity that is considered for the solution found
-        var epsilon = 0.0
 
         // List of previous events
         var adaptationEnvironment = mutableListOf<Specimen>()
@@ -22,46 +19,47 @@ class FitnessCalc {
 
     fun setStaticObjects(
         population: Int,
-        muSize: Int,
         mProbability: Int,
         selection: Int,
-        environment: List<Specimen>,
-        maxAffinity: Double
+        environment: List<Specimen>
     ) {
         populationSize = population
-        mutationProbability = muSize
         mutationProbability = mProbability
         selectionSize = selection
         adaptationEnvironment = environment.toMutableList()
-        epsilon = maxAffinity
     }
 
     fun fitnessScore(event: Specimen): Double {
-        //receber adaptation environment .orderBy("dtstart", Query.Direction.ASCENDING)
-        //ignora todos os eventos antes da data atual
-        //verificar todos os eventos proximos que comecam antes do specime, se este esta entre o dtstart e o dtend
-        //verificar evento logo apos o specime, se comeca antes do specime acabar
         val weekDayScore: Double
         var eventOverlapScore = 1.0
         val environment = mutableListOf<Specimen>()
         val day = Calendar.getInstance()
 
-        if(!adaptationEnvironment.isNullOrEmpty()) {
-            environment.addAll(adaptationEnvironment.takeLastWhile { it.getDtStart() > Calendar.getInstance().timeInMillis })
+        //ignora todos os eventos antes da data atual
+        if (!adaptationEnvironment.isNullOrEmpty()) {
+            environment.addAll(adaptationEnvironment.takeLastWhile { it.getDtStart() > day.timeInMillis })
         }
 
-        if(!environment.isNullOrEmpty()) {
-            environment.find { it.getDtStart() < event.getDtStart()}?.let {
+        //verificar todos os eventos proximos que comecam antes do specime, se este esta entre o dtstart e o dtend
+        if (!environment.isNullOrEmpty()) {
+            environment.find { it.getDtStart() < event.getDtStart() }?.let {
                 if (it.getDtEnd() > event.getDtStart() && eventOverlapScore > 0) {
                     eventOverlapScore -= 0.5
                 }
+            }
+
+            //verificar evento logo apos o specime, se comeca antes do specime acabar
+            val afterEvent =
+                environment.firstOrNull { it.getDtStart() > event.getDtStart() && it.getDtStart() < event.getDtEnd() }
+            if (afterEvent != null) {
+                eventOverlapScore -= 0.5
             }
         }
 
         //verificar dia da semana
         day.timeInMillis = event.getDtStart()
 
-        weekDayScore = when(day.get(Calendar.DAY_OF_WEEK)) {
+        weekDayScore = when (day.get(Calendar.DAY_OF_WEEK)) {
             DayOfWeek.MONDAY.value -> WeekScore.MONDAY.dayScore
             DayOfWeek.TUESDAY.value -> WeekScore.TUESDAY.dayScore
             DayOfWeek.WEDNESDAY.value -> WeekScore.WEDNESDAY.dayScore
@@ -72,34 +70,22 @@ class FitnessCalc {
             else -> 0.0
         }
 
-        return weekDayScore + eventOverlapScore
+        return weekDayScore + eventOverlapScore * 2
     }
 
     // Select the best specimens from the population
-    private fun selectBest(population: MutableList<Specimen>): List<Specimen> {
-        sort(population)
+    fun selectBest(population: MutableList<Specimen>): List<Specimen> {
+        population.sortWith(compareByDescending { it.getFitnessScore() })
         //adicionar proximmidade do evento ao calculo
+//        for (i in 0..3) {
+//            population[i].addFitnessScore(0.25)
+//        }
 
         return population.take(selectionSize)
     }
 
-    // Sort population by score
-    private fun sort(population: MutableList<Specimen>) {
-        var temp: Specimen
-
-        for (i in 0 until populationSize) {
-            for (j in 0 until populationSize) {
-                if (population[i].getFitnessScore() < population[j].getFitnessScore()) {
-                    temp = population[i]
-                    population[i] = population[j]
-                    population[j] = temp
-                }
-            }
-        }
-    }
-
     // Generate initial base
-    fun generateInitialPopulation() {
+    fun generateInitialPopulation(): MutableList<Specimen> {
         val population = mutableListOf<Specimen>()
 
         for (i in 0..populationSize) {
@@ -121,7 +107,11 @@ class FitnessCalc {
             //calcular afinidade
             item.setFitnessScore()
             population.add(item)
+
+            println("Current_Selection " + item.getHour() + ":" +item.getMinutes() + "\t" + item.getDay() + "/" + item.getMonth())
         }
+
+        return population
     }
 
     // Generate only future dates, with hour between 8-21h, up tp 3 months in the future
@@ -148,11 +138,7 @@ class FitnessCalc {
             val hour = Random.nextInt(8..21)
             val minute = if (randNumber == 0) 0 else 30
             val day = Random.nextInt(1..28)
-            val month = Random.nextInt(
-                range = startInclusive.get(Calendar.DAY_OF_MONTH)..endExclusive.get(
-                    Calendar.MONTH
-                )
-            )
+            val month = Random.nextInt(range = startInclusive.get(Calendar.MONTH)..endExclusive.get(Calendar.MONTH))
             newDate.set(startInclusive.get(Calendar.YEAR), month, day, hour, minute)
         } while (newDate.timeInMillis < startInclusive.timeInMillis)
 
@@ -161,28 +147,28 @@ class FitnessCalc {
 
     // Reproduce new specimen on base of two parents
     private fun produceNew(a: Specimen, b: Specimen): Specimen {
-        val s = Specimen("", a.getSpecimen().calendar_id)
+        var s = Specimen("", a.getSpecimen().calendar_id)
         val mp = Random.nextInt(101)
 
         when (Random.nextInt(101)) {
             // 45%
             in (0..45) -> {
-                s.setStartHour((a.getHour() + b.getHour()) / 2)
+                s.setStartHour(if (Random.nextBoolean()) a.getHour() else b.getHour())
             }
             // 40%
             in (46..85) -> {
-                s.setDay((a.getDay() + b.getDay()) / 2)
+                s.setDay(if (Random.nextBoolean()) a.getDay() else b.getDay())
             }
             // 15%
             in (86..100) -> {
-                s.setMonth((a.getMonth() + b.getMonth()) / 2)
+                s.setMonth(if (Random.nextBoolean()) a.getMonth() else b.getMonth())
             }
         }
         s.setDuration(TimeUnit.HOURS.toMillis(1))           //update end event date
 
         // Mutate if probability allows
         if (mp <= mutationProbability) {
-            mutate(s)
+            s = mutate(s)
         }
 
         // Calculate Affinity for new specimen
@@ -191,7 +177,7 @@ class FitnessCalc {
     }
 
     // Mutate the specimen
-    private fun mutate(a: Specimen) {
+    private fun mutate(a: Specimen): Specimen {
 
         when (Random.nextInt(101)) {
             // 45%
@@ -212,22 +198,18 @@ class FitnessCalc {
                 val now = Calendar.getInstance().timeInMillis
                 threeMonthsInFuture.timeInMillis = (now + aDay * 92)
 
-                val month = Random.nextInt(
-                    range = Calendar.getInstance()
-                        .get(Calendar.DAY_OF_MONTH)..threeMonthsInFuture.get(
-                        Calendar.MONTH
-                    )
-                )
+                val month = Random.nextInt(range = Calendar.getInstance().get(Calendar.MONTH)..threeMonthsInFuture.get(Calendar.MONTH))
                 a.setMonth(month)
             }
         }
 
         a.setDuration(TimeUnit.HOURS.toMillis(1))
+        return a
     }
 
     // Generate population by reproduction of selection
     fun generate(population: MutableList<Specimen>): MutableList<Specimen> {
-        val newGeneration = mutableListOf<Specimen>( )
+        val newGeneration = mutableListOf<Specimen>()
 
         // Copy best instances from the selection to keep them in new generation
         newGeneration.addAll(selectBest(population))
@@ -245,7 +227,7 @@ class FitnessCalc {
             } while (parent1Index == parent2Index)
 
             // Creates new specimen
-            newGeneration[childIndex] = produceNew(population[parent1Index], population[parent2Index])
+            newGeneration.add(childIndex, produceNew(population[parent1Index], population[parent2Index]))
             childIndex++
         }
 

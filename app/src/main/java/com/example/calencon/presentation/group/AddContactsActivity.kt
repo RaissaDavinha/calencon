@@ -91,7 +91,9 @@ class AddContactsActivity : AppCompatActivity() {
                 .document(user.uid)
                 .collection(CALENDAR_DOC)
                 .addSnapshotListener { value, error ->
-                    error?.let { return@addSnapshotListener }
+                    error?.let {
+                        println("Erro ao puxar calendario de usuarios")
+                        return@addSnapshotListener }
                     value?.let {
                         for (doc in value) {
                             val event = doc.toObject(Event::class.java)
