@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.calencon.R
+import com.example.calencon.presentation.chat.adapter.EventsAdapter
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.CalendarMonth
 import com.kizitonwose.calendarview.model.DayOwner
@@ -27,6 +28,7 @@ class CalendarActivity : AppCompatActivity() {
     var boundHeaderMonth: CalendarMonth? = null
     private var selectedDate: LocalDate? = null
     private val monthTitleFormatter = DateTimeFormatter.ofPattern("MMMM")
+    private val eventsAdapter = EventsAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,6 +84,10 @@ class CalendarActivity : AppCompatActivity() {
                 else -> false
             }
         }
+    }
+
+    fun setRecyclerAdapter() {
+        events.adapter = eventsAdapter
     }
 }
 
