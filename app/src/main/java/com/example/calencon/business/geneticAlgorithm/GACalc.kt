@@ -75,13 +75,6 @@ class GACalc {
 
     // Select the best specimens from the population
     fun selectBest(population: MutableList<Specimen>): List<Specimen> {
-
-        //adicionar proximmidade do evento ao calculo
-        population.sortWith(compareBy { it.getDtStart() })
-        for (i in 0..5) {
-            population[i].addFitnessScore(0.25)
-        }
-
         population.sortWith(compareByDescending { it.getFitnessScore() })
 
         return population.take(selectionSize)
@@ -110,8 +103,6 @@ class GACalc {
             //calcular afinidade
             item.setFitnessScore()
             population.add(item)
-
-            println("Current_Selection " + item.getHour() + ":" +item.getMinutes() + "\t" + item.getDay() + "/" + item.getMonth())
         }
 
         return population
@@ -157,7 +148,7 @@ class GACalc {
         println(
             "Current_Selection " + result.get(Calendar.HOUR_OF_DAY) + ":" + result.get(
                 Calendar.MINUTE
-            ) + "\t" + result.get(Calendar.DAY_OF_MONTH) + "/" + result.get(Calendar.MONTH)+1 + "/" + result.get(Calendar.YEAR)
+            ) + "\t" + result.get(Calendar.DAY_OF_MONTH) + "/" + result.get(Calendar.MONTH) + "/" + result.get(Calendar.YEAR)
         )
 
         return result.timeInMillis
@@ -172,6 +163,7 @@ class GACalc {
             // 45%
             in (0..45) -> {
                 s.setStartHour(if (Random.nextBoolean()) a.getHour() else b.getHour())
+                s.setStartMinutes(if (Random.nextBoolean()) a.getMinutes() else b.getMinutes())
             }
             // 40%
             in (46..85) -> {
@@ -182,7 +174,8 @@ class GACalc {
                 s.setMonth(if (Random.nextBoolean()) a.getMonth() else b.getMonth())
             }
         }
-        s.setDuration(TimeUnit.HOURS.toMillis(1))           //update end event date
+        s.setYear(if (Random.nextBoolean()) a.getYear() else b.getYear())
+        s.setDuration(TimeUnit.HOURS.toMillis(1))
 
         // Mutate if probability allows
         if (mp <= mutationProbability) {
@@ -206,17 +199,22 @@ class GACalc {
             }
             // 40%
             in (46..85) -> {
-                val day = Random.nextInt(1..28)
+                val c = Calendar.getInstance()
+                c.set(a.getYear(), a.getMonth(), 0)
+                val dayOfMonth = c.get(Calendar.DAY_OF_MONTH)
+                val day = (Math.random() * dayOfMonth).toInt() + 1
                 a.setDay(day)
             }
             // 15%
             in (86..100) -> {
                 val threeMonthsInFuture = Calendar.getInstance()
                 val aDay = TimeUnit.DAYS.toMillis(1)
-                val now = Calendar.getInstance().timeInMillis
+                val today = Calendar.getInstance()
+                val now = today.timeInMillis
                 threeMonthsInFuture.timeInMillis = (now + aDay * 92)
 
-                val month = Random.nextInt(range = Calendar.getInstance().get(Calendar.MONTH)..threeMonthsInFuture.get(Calendar.MONTH))
+                val range = today.get(Calendar.MONTH) - threeMonthsInFuture.get(Calendar.MONTH)
+                val month = (Math.random() * range).toInt() + 1 + today.get(Calendar.MONTH)
                 a.setMonth(month)
             }
         }

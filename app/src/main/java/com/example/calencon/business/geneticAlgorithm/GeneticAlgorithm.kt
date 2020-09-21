@@ -54,7 +54,7 @@ class GeneticAlgorithm {
         var currentSelection = mutableListOf<Specimen>()
         var currentProximity: Double
         val maxIterations = 40
-        val maxScore = 3.25
+        val maxScore = 3.00
 
         for (i in 0..maxIterations) {
             currentSelection = geneticAlgorithmCalc.selectBest(currentPopulation).toMutableList()
@@ -65,10 +65,29 @@ class GeneticAlgorithm {
                         "Current_Selection " + currentSelection[0].getHour() + ":" + currentSelection[0].getMinutes() + "\t" + currentSelection[0].getDay() + "/" + currentSelection[0].getMonth()
             )
 
-            if (currentProximity == maxScore) break
+//            if (currentProximity == maxScore) break
 
             currentPopulation = geneticAlgorithmCalc.generate(currentSelection)
         }
+
+        //adicionar proximmidade do evento ao calculo
+        currentSelection.sortWith(compareBy { it.getDtStart() })
+        for (i in 0..5) {
+            currentSelection[i].addFitnessScore(0.25)
+        }
+        currentProximity = currentSelection[0].getFitnessScore()
+
+        println("Current_Proximity " + currentProximity + "\t" +
+                "Current_Selection " + currentSelection[0].getHour() + ":" + currentSelection[0].getMinutes() + "\t" + currentSelection[0].getDay() + "/" + currentSelection[0].getMonth()
+        )
+
+        currentSelection.sortWith(compareByDescending { it.getFitnessScore() })
+
+        currentProximity = currentSelection[0].getFitnessScore()
+
+        println("Current_Proximity " + currentProximity + "\t" +
+                "Current_Selection " + currentSelection[0].getHour() + ":" + currentSelection[0].getMinutes() + "\t" + currentSelection[0].getDay() + "/" + currentSelection[0].getMonth()
+        )
 
         return currentSelection[0].getDtStart()
     }

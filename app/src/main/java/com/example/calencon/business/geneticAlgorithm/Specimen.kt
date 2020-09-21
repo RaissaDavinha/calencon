@@ -91,6 +91,13 @@ class Specimen(userId: String = "", calendarId: Long, eventTitle: String = "", d
         individual.dtstart = cal.timeInMillis
     }
 
+    fun setStartMinutes(minutes: Int) {
+        val cal = Calendar.getInstance()
+        cal.timeInMillis = individual.dtstart
+        cal.set(Calendar.MINUTE, minutes)
+        individual.dtstart = cal.timeInMillis
+    }
+
     fun setStartHour(hour: Int, minute:Int) {
         val cal = Calendar.getInstance()
         cal.timeInMillis = individual.dtstart
