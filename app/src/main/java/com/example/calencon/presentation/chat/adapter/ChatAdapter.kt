@@ -42,8 +42,8 @@ class ChatAdapter(private val userId: String) : BaseRecyclerAdapter<Message, Cha
         }
     }
 
-    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.bind(mData[position])
+    override fun onBindViewHolder(k: ViewHolder, position: Int) {
+        k.bind(mData[position])
     }
 
     override fun validateDate(): Boolean = false

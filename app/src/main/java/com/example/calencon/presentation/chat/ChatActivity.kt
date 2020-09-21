@@ -1,11 +1,9 @@
 package com.example.calencon.presentation.chat
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.example.calencon.R
-import com.example.calencon.business.geneticAlgorithm.GeneticAlgorithm
 import com.example.calencon.data.*
 import com.example.calencon.presentation.chat.adapter.ChatAdapter
 import com.google.firebase.auth.FirebaseAuth
@@ -13,7 +11,6 @@ import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.activity_chat.*
-import kotlinx.android.synthetic.main.activity_chat.topAppBar
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -23,7 +20,6 @@ class ChatActivity : AppCompatActivity() {
     private var mMe: User? = null
     private var mGroup: Group? = null
     private lateinit var chatType: ChatType
-    private val GA = GeneticAlgorithm()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,48 +29,8 @@ class ChatActivity : AppCompatActivity() {
             chatType = it as ChatType
         }
 
-        FirebaseFirestore.getInstance().collection(USERS_DOC)
-            .document(FirebaseAuth.getInstance().uid.toString())
-            .get()
-            .addOnSuccessListener { documentSnapshot ->
-                mMe = documentSnapshot.toObject(User::class.java)
-                when (chatType) {
-                    ChatType.GROUP -> {
-                        intent.extras?.getParcelable<Group>(GROUP_KEY)?.let {
-                            mGroup = it
-                            supportActionBar?.title = mGroup?.name
-                        }
-                        setAdapter(true)
-                        fetchGroupsMessages()
-                        mGroup?.let {
-                            GA.initializeGeneticAlgorithm(it.id)
-                        }
-                    }
-                    ChatType.SINGLE -> {
-                        intent.extras?.getParcelable<User>(USER_KEY)?.let {
-                            mUser = it
-                            supportActionBar?.title = mUser?.name
-                        }
-                        setAdapter(false)
-                        fetchSingleMessages()
-                    }
-                }
-            }
-
-        topAppBar.setNavigationOnClickListener { finish() }
-        topAppBar.setOnMenuItemClickListener { item: MenuItem? ->
-            when(item?.itemId) {
-                R.id.chat_to_calendar -> {
-                    val intent = Intent(baseContext, CalendarActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                R.id.more -> {
-                    true
-                }
-                else -> false
-            }
-        }
+        getFirebaseData()
+        setTopAppBar()
 
         btn_send.setOnClickListener {
             sendMessage()
@@ -86,6 +42,35 @@ class ChatActivity : AppCompatActivity() {
             mAdapter = ChatAdapter(uid)
             mAdapter.setIsGroup(isGroup)
             list_chat.adapter = mAdapter
+        }
+    }
+
+    private fun setTopAppBar() {
+        topAppBar.setNavigationOnClickListener { finish() }
+        topAppBar.setOnMenuItemClickListener { item: MenuItem? ->
+            when (item?.itemId) {
+                R.id.chat_to_calendar -> {
+                    var chatId = ""
+                    when (chatType) {
+                        ChatType.GROUP -> {
+                            mGroup?.let {
+                                chatId = it.id
+                            }
+                        }
+                        ChatType.SINGLE -> {
+                            mUser?.let {
+                                chatId = it.uid
+                            }
+                        }
+                    }
+                    startActivity(CalendarActivity.getStartIntent(baseContext, chatId))
+                    true
+                }
+                R.id.more -> {
+                    true
+                }
+                else -> false
+            }
         }
     }
 
@@ -196,5 +181,32 @@ class ChatActivity : AppCompatActivity() {
                 .addOnSuccessListener {}
                 .addOnFailureListener {}
         }
+    }
+
+    private fun getFirebaseData() {
+        FirebaseFirestore.getInstance().collection(USERS_DOC)
+            .document(FirebaseAuth.getInstance().uid.toString())
+            .get()
+            .addOnSuccessListener { documentSnapshot ->
+                mMe = documentSnapshot.toObject(User::class.java)
+                when (chatType) {
+                    ChatType.GROUP -> {
+                        intent.extras?.getParcelable<Group>(GROUP_KEY)?.let {
+                            mGroup = it
+                            supportActionBar?.title = mGroup?.name
+                        }
+                        setAdapter(true)
+                        fetchGroupsMessages()
+                    }
+                    ChatType.SINGLE -> {
+                        intent.extras?.getParcelable<User>(USER_KEY)?.let {
+                            mUser = it
+                            supportActionBar?.title = mUser?.name
+                        }
+                        setAdapter(false)
+                        fetchSingleMessages()
+                    }
+                }
+            }
     }
 }

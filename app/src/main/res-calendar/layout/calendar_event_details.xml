@@ -25,12 +25,12 @@
         android:layout_height="wrap_content"
         android:padding="4dp"
         android:textColor="@color/pink"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@id/guideline_start"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="12:00" />
 
-    <view
+    <View
         android:id="@+id/line"
         android:layout_width="0dp"
         android:layout_height="1dp"
@@ -47,14 +47,14 @@
         android:layout_height="wrap_content"
         android:padding="4dp"
         android:textColor="@color/pink"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@id/guideline_start"
         app:layout_constraintTop_toBottomOf="@id/line"
         tools:text="15:00" />
 
     <TextView
         android:id="@+id/title"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@id/start_time"
@@ -63,7 +63,7 @@
         app:layout_constraintEnd_toEndOf="@id/guideline_end"
         tools:text="Aniversario de casamento"/>
 
-    <view
+    <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="10dp"
