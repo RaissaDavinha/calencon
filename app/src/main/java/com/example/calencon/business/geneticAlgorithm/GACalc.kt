@@ -148,7 +148,7 @@ class GACalc {
             val dayOfMonth = c.get(Calendar.DAY_OF_MONTH)
             val day = (Math.random() * dayOfMonth).toInt() + 1
 
-            val hour = (Math.random() * 23).toInt() + 1
+            val hour = (Math.random() * 11).toInt() + 9
             val minute = if (randNumber == 0) 0 else 30
 
             result.set(year, month, day, hour, minute)
