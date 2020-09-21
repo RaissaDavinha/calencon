@@ -75,11 +75,14 @@ class GACalc {
 
     // Select the best specimens from the population
     fun selectBest(population: MutableList<Specimen>): List<Specimen> {
-        population.sortWith(compareByDescending { it.getFitnessScore() })
+
         //adicionar proximmidade do evento ao calculo
-//        for (i in 0..3) {
-//            population[i].addFitnessScore(0.25)
-//        }
+        population.sortWith(compareBy { it.getDtStart() })
+        for (i in 0..5) {
+            population[i].addFitnessScore(0.25)
+        }
+
+        population.sortWith(compareByDescending { it.getFitnessScore() })
 
         return population.take(selectionSize)
     }
@@ -131,18 +134,33 @@ class GACalc {
     }
 
     private fun between(startInclusive: Calendar, endExclusive: Calendar): Long {
-        val newDate = Calendar.getInstance()
+        val startYear = startInclusive.get(Calendar.YEAR)
+        val endYear = endExclusive.get(Calendar.YEAR)
+        val result = Calendar.getInstance()
 
         do {
             val randNumber = Random.nextInt(0..1)
-            val hour = Random.nextInt(8..21)
-            val minute = if (randNumber == 0) 0 else 30
-            val day = Random.nextInt(1..28)
-            val month = Random.nextInt(range = startInclusive.get(Calendar.MONTH)..endExclusive.get(Calendar.MONTH))
-            newDate.set(startInclusive.get(Calendar.YEAR), month, day, hour, minute)
-        } while (newDate.timeInMillis < startInclusive.timeInMillis)
+            val year = (Math.random() * (endYear - startYear + 1)).toInt() + startYear
+            val month = (Math.random() * 12).toInt() + 1
 
-        return newDate.timeInMillis
+            val c = Calendar.getInstance()
+            c.set(year, month, 0)
+            val dayOfMonth = c.get(Calendar.DAY_OF_MONTH)
+            val day = (Math.random() * dayOfMonth).toInt() + 1
+
+            val hour = (Math.random() * 23).toInt() + 1
+            val minute = if (randNumber == 0) 0 else 30
+
+            result.set(year, month, day, hour, minute)
+        } while (result.timeInMillis < startInclusive.timeInMillis)
+
+        println(
+            "Current_Selection " + result.get(Calendar.HOUR_OF_DAY) + ":" + result.get(
+                Calendar.MINUTE
+            ) + "\t" + result.get(Calendar.DAY_OF_MONTH) + "/" + result.get(Calendar.MONTH)+1 + "/" + result.get(Calendar.YEAR)
+        )
+
+        return result.timeInMillis
     }
 
     // Reproduce new specimen on base of two parents

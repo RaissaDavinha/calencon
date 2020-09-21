@@ -5,6 +5,7 @@ import com.example.calencon.data.Event
 import com.example.calencon.data.GROUP_DOC
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import java.time.LocalDate
 
 /*
 The basic process for a genetic algorithm is:
@@ -27,7 +28,6 @@ Mutation typically works by making very small changes at random to an individual
 
 class GeneticAlgorithm {
     private val geneticAlgorithmCalc = GACalc()
-    private val firebase = FirebaseFirestore.getInstance()
     private val populationSize = 100
     private val selectionSize = 80
     private val mutationProbability = 100
@@ -35,37 +35,26 @@ class GeneticAlgorithm {
     private var currentPopulation = mutableListOf<Specimen>()
 
     // Initializes genetic algorithm
-    fun initializeGeneticAlgorithm(groupId: String) {
+    fun initializeGeneticAlgorithm(events: MutableMap<LocalDate, List<Event>>) {
+        events.forEach { (_, eventList) ->
+            eventList.forEach { event ->
+                val specimen = Specimen(event.user_id, event.calendar_id, event.title, event.dtstart, event.dtend, event.duration, event.all_day, event.rrule, event.rdate, event.availability)
+                adaptationEnvironment.add(specimen)
+            }
+        }
+
         // Set up options for the algorithm
         // Generate initial population
-        firebase.collection(GROUP_DOC)
-            .document(groupId)
-            .collection(CALENDAR_DOC)
-            .orderBy("dtstart", Query.Direction.ASCENDING)
-            .addSnapshotListener { querySnapshot, error ->
-                error?.let {
-                    println("Erro ao puxar calendario de usuarios: $it")
-                    return@addSnapshotListener }
-                querySnapshot?.let {
-                    for (doc in it) {
-                        val event = doc.toObject(Event::class.java)
-                        val specimen = Specimen(event.user_id, event.calendar_id, event.title, event.dtstart, event.dtend, event.duration, event.all_day, event.rrule, event.rdate, event.availability)
-                        adaptationEnvironment.add(specimen)
-                    }
-
-                    geneticAlgorithmCalc.setStaticObjects(populationSize, mutationProbability, selectionSize, adaptationEnvironment)
-                    currentPopulation = geneticAlgorithmCalc.generateInitialPopulation()
-                    run()
-                }
-            }
+        geneticAlgorithmCalc.setStaticObjects(populationSize, mutationProbability, selectionSize, adaptationEnvironment)
+        currentPopulation = geneticAlgorithmCalc.generateInitialPopulation()
     }
 
     // Starts and executes algorithm
-    fun run() {
-        var currentSelection: MutableList<Specimen>
+    fun run(): Long {
+        var currentSelection = mutableListOf<Specimen>()
         var currentProximity: Double
         val maxIterations = 40
-        val maxScore = 3.0
+        val maxScore = 3.25
 
         for (i in 0..maxIterations) {
             currentSelection = geneticAlgorithmCalc.selectBest(currentPopulation).toMutableList()
@@ -80,5 +69,7 @@ class GeneticAlgorithm {
 
             currentPopulation = geneticAlgorithmCalc.generate(currentSelection)
         }
+
+        return currentSelection[0].getDtStart()
     }
 }

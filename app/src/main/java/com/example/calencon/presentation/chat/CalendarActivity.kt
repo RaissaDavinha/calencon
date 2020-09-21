@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,6 +28,7 @@ import com.kizitonwose.calendarview.ui.DayBinder
 import com.kizitonwose.calendarview.ui.MonthHeaderFooterBinder
 import com.kizitonwose.calendarview.ui.ViewContainer
 import kotlinx.android.synthetic.main.calendar_activity.*
+import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDate
 import java.time.YearMonth
@@ -35,16 +37,11 @@ import java.time.format.DateTimeFormatter
 import java.time.temporal.WeekFields
 import java.util.*
 
-
 @Suppress("HasPlatformType")
 class CalendarActivity : AppCompatActivity() {
-    private val firebase = FirebaseFirestore.getInstance()
-    val boundDays = mutableSetOf<CalendarDay>()
     var boundHeaderMonth: CalendarMonth? = null
     private var selectedDate: LocalDate? = null
-    private val monthTitleFormatter = DateTimeFormatter.ofPattern("MMMM")
     private val eventsAdapter = EventsAdapter()
-    private val today = LocalDate.now()
     private var events = mutableMapOf<LocalDate, List<Event>>()
     private val chatId by lazy {
         intent.getStringExtra(CHAT_ID)
@@ -62,6 +59,7 @@ class CalendarActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.calendar_activity)
+        val today = LocalDate.now()
 
         setCalendarSetup()
         calendarView.post {
@@ -83,6 +81,10 @@ class CalendarActivity : AppCompatActivity() {
                 }
                 else -> false
             }
+        }
+
+        filter_button.setOnClickListener {
+            findData()
         }
     }
 
@@ -118,7 +120,23 @@ class CalendarActivity : AppCompatActivity() {
     }
 
     private fun findData() {
-        val GA = GeneticAlgorithm()
+        progress_bar.visibility = View.VISIBLE
+        val currentDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val currentTimeFormat = SimpleDateFormat("h:mm a", Locale.getDefault())
+        val calendar = Calendar.getInstance()
+        val ga = GeneticAlgorithm()
+        ga.initializeGeneticAlgorithm(events)
+        calendar.timeInMillis = ga.run()
+
+        val builder: AlertDialog.Builder? = this.let {
+            AlertDialog.Builder(it)
+        }
+
+        builder?.setMessage(getString(R.string.day_hour, currentDateFormat.format(calendar.time), currentTimeFormat.format(calendar.time)))
+            ?.setTitle(R.string.best_data)
+
+        builder?.create()?.show()
+        progress_bar.visibility = View.GONE
     }
 
     private fun updateAdapterForDate(date: LocalDate?) {
@@ -130,6 +148,7 @@ class CalendarActivity : AppCompatActivity() {
     }
 
     private fun getFirebaseData() {
+        val firebase = FirebaseFirestore.getInstance()
         firebase.collection(GROUP_DOC)
             .document(chatId)
             .collection(CALENDAR_DOC)
@@ -139,6 +158,7 @@ class CalendarActivity : AppCompatActivity() {
                     println("Erro ao puxar calendario de usuarios: $it")
                     return@addSnapshotListener }
                 querySnapshot?.let {
+                    events.clear()
                     for (doc in it) {
                         val event = doc.toObject(Event::class.java)
                         val date: LocalDate = Instant.ofEpochMilli(event.dtstart).atZone(ZoneId.systemDefault()).toLocalDate()
@@ -149,6 +169,9 @@ class CalendarActivity : AppCompatActivity() {
     }
 
     private fun setCalendarSetup() {
+        val monthTitleFormatter = DateTimeFormatter.ofPattern("MMMM")
+        val boundDays = mutableSetOf<CalendarDay>()
+
         calendarView.dayBinder = object : DayBinder<DayViewContainer> {
             // Called only when a new container is needed.
             override fun create(view: View) = DayViewContainer(view)
@@ -162,7 +185,7 @@ class CalendarActivity : AppCompatActivity() {
                     container.textView.setTextColor(
                         ContextCompat.getColor(
                             baseContext,
-                            R.color.black
+                            R.color.colorPrimaryDark
                         )
                     )
                     container.binding.setBackgroundResource(if (selectedDate == day.date) R.drawable.selected_day else 0)

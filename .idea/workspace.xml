@@ -20,6 +20,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1f937f56-e03d-4e69-9446-8fdca6530765" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/app/src/main/res-calendar/drawable/ic_filter.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/fileHashes/fileHashes.bin" afterDir="false" />
@@ -30,18 +31,16 @@
       <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/assetWizardSettings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/assetWizardSettings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/calencon/data/Constants.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/calencon/data/Constants.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/calencon/business/geneticAlgorithm/GACalc.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/calencon/business/geneticAlgorithm/GACalc.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/calencon/business/geneticAlgorithm/GeneticAlgorithm.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/calencon/business/geneticAlgorithm/GeneticAlgorithm.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/calencon/data/WeekScore.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/calencon/data/WeekScore.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/calencon/presentation/chat/CalendarActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/calencon/presentation/chat/CalendarActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/calencon/presentation/chat/ChatActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/calencon/presentation/chat/ChatActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/calencon/presentation/chat/adapter/ChatAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/calencon/presentation/chat/adapter/ChatAdapter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/calencon/presentation/chat/adapter/EventsAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/calencon/presentation/chat/adapter/EventsAdapter.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/calencon/presentation/contacts/ContactsFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/calencon/presentation/contacts/ContactsFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/calencon/presentation/contacts/UserItem.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/calencon/presentation/contacts/UserItemViewHolder.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/calencon/presentation/group/CreateGroupDialog.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/calencon/presentation/group/CreateGroupDialog.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res-calendar/layout/calendar_activity.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res-calendar/layout/calendar_activity.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res-calendar/layout/calendar_event_details.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res-calendar/layout/calendar_event_details.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,8 +128,12 @@
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\raiss\AndroidStudioProjects\CalenCon\app" />
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\raiss\Documents\calencon\app\src\main\res-calendar\layout" />
+      <recent name="C:\Users\raiss\Documents\CalenCon\app\src\main\java\com\example\calencon\presentation\base" />
+      <recent name="C:\Users\raiss\Documents\CalenCon\app\src\main\res-group\menu" />
+      <recent name="C:\Users\raiss\Documents\CalenCon\app\src\main\res-group\layout" />
+      <recent name="C:\Users\raiss\Documents\CalenCon\app\src\main\res\drawable" />
     </key>
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
       <recent name="com.example.calencon.presentation.group" />
@@ -144,12 +147,8 @@
       <recent name="com.example.calencon.presentation.menu" />
       <recent name="com.example.calencon.presentation.splash" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\raiss\Documents\calencon\app\src\main\res-calendar\layout" />
-      <recent name="C:\Users\raiss\Documents\CalenCon\app\src\main\java\com\example\calencon\presentation\base" />
-      <recent name="C:\Users\raiss\Documents\CalenCon\app\src\main\res-group\menu" />
-      <recent name="C:\Users\raiss\Documents\CalenCon\app\src\main\res-group\layout" />
-      <recent name="C:\Users\raiss\Documents\CalenCon\app\src\main\res\drawable" />
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\raiss\AndroidStudioProjects\CalenCon\app" />
     </key>
   </component>
   <component name="RunManager">
@@ -268,10 +267,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="704" y="172" width="515" height="695" key="#org.jetbrains.kotlin.idea.refactoring.move.moveDeclarations.ui.MoveKotlinTopLevelDeclarationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1598558688137" />
-    <state x="909" y="5" width="669" height="1035" key="#xdebugger.evaluate" timestamp="1600482984936">
+    <state x="1027" y="104" width="669" height="699" key="#xdebugger.evaluate" timestamp="1600669020181">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="909" y="5" width="669" height="1035" key="#xdebugger.evaluate/0.0.1920.1040@0.0.1920.1040" timestamp="1600482984936" />
+    <state x="1027" y="104" width="669" height="699" key="#xdebugger.evaluate/0.0.1920.1040@0.0.1920.1040" timestamp="1600669020181" />
     <state x="540" y="275" key="AndroidCreateResourceDirectoryDialog" timestamp="1597888863113">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -284,26 +283,26 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="564" y="279" key="AndroidProcessChooserDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1598565175166" />
-    <state x="817" y="260" key="FileChooserDialogImpl" timestamp="1600476421455">
+    <state x="817" y="260" key="FileChooserDialogImpl" timestamp="1600659098623">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="817" y="260" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1600476421455" />
-    <state width="1877" height="261" key="GridCell.Tab.0.bottom" timestamp="1600648773741">
+    <state x="817" y="260" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1600659098623" />
+    <state width="1877" height="199" key="GridCell.Tab.0.bottom" timestamp="1600671123299">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="261" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1600648773741" />
-    <state width="1877" height="261" key="GridCell.Tab.0.center" timestamp="1600648773741">
+    <state width="1877" height="199" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1600671123299" />
+    <state width="1877" height="199" key="GridCell.Tab.0.center" timestamp="1600671123298">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="261" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1600648773741" />
-    <state width="1877" height="261" key="GridCell.Tab.0.left" timestamp="1600648773740">
+    <state width="1877" height="199" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1600671123298" />
+    <state width="1877" height="199" key="GridCell.Tab.0.left" timestamp="1600671123298">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="261" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1600648773740" />
-    <state width="1877" height="261" key="GridCell.Tab.0.right" timestamp="1600648773741">
+    <state width="1877" height="199" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1600671123298" />
+    <state width="1877" height="199" key="GridCell.Tab.0.right" timestamp="1600671123298">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="261" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1600648773741" />
+    <state width="1877" height="199" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1600671123298" />
     <state width="1877" height="204" key="GridCell.Tab.1.bottom" timestamp="1598820560617">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -356,20 +355,9 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="616" y="240" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1600477582017" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1600218620968">
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1600670871367">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1600218620968" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/calencon/presentation/chat/CalendarActivity.kt</url>
-          <line>124</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1600670871367" />
   </component>
 </project>

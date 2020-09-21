@@ -3,6 +3,7 @@ package com.example.calencon.presentation.login
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.Constraints.TAG
@@ -29,6 +30,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun signInUser(email: String, password: String) {
+        progress_bar.visibility = View.VISIBLE
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
@@ -42,7 +44,7 @@ class LoginActivity : AppCompatActivity() {
                         .show()
                 }
             }
-
+        progress_bar.visibility = View.GONE
     }
 
     private fun signUpUser() {

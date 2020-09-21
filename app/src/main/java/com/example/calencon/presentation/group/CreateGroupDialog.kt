@@ -32,7 +32,7 @@ class CreateGroupDialog(context: Context, private val listener: OnOptionClickLis
 
         select_photo_button.setOnClickListener { listener.onSelectPhoto() }
         create_button.setOnClickListener {
-            if (input_user_name.text != null && input_user_name.text?.length!! > 3) {
+            if (input_user_name.text != null && input_user_name.text?.length!! >= 3) {
                 listener.onDoneClicked(input_user_name.text.toString())
             } else {
                 Toast.makeText(context, R.string.min_group_name_size, Toast.LENGTH_SHORT).show()
