@@ -49,4 +49,26 @@
     <!--  Calendar  -->
     <string name="best_data">A melhor data para seu evento é </string>
     <string name="day_hour">Dia %s %s</string>
+
+    <!--  Menu  -->
+    <string name="menu_history">Histórico</string>
+    <string name="menu_history_message">veja seu histórico de compra</string>
+    <string name="menu_favorite_places">Locais favoritos</string>
+    <string name="menu_favorite_places_message">seus locais exclusivos</string>
+    <string name="menu_help">Ajuda</string>
+    <string name="menu_help_message">estamos prontos para te ajudar</string>
+    <string name="menu_feedback">Feedback</string>
+    <string name="menu_feedback_message">estamos sempre melhorando</string>
+    <string name="menu_settings">Configurações</string>
+    <string name="menu_settings_message">configure o app para você</string>
+    <string name="menu_logout">Sair</string>
+
+    <string name="menu_open">Abrir</string>
+    <string name="menu_close">Fechar</string>
+
+    <string name="logout_title">SAIR</string>
+    <string name="logout_message">Deseja sair de sua conta?</string>
+
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
 </resources>

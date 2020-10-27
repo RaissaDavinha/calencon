@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".presentation.home.view.HomeActivity">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/action_history"
+            android:title="@null"
+            app:actionLayout="@layout/drawer_item" />
+
+        <item
+            android:id="@+id/action_help"
+            android:title="@null"
+            app:actionLayout="@layout/drawer_item" />
+
+        <item
+            android:id="@+id/action_feedback"
+            android:title="@null"
+            app:actionLayout="@layout/drawer_item" />
+
+        <item
+            android:id="@+id/action_settings"
+            android:title="@null"
+            app:actionLayout="@layout/drawer_item" />
+
+        <item
+            android:id="@+id/action_logout"
+            android:title="@null"
+            app:actionLayout="@layout/drawer_item" />
+    </group>
+
+</menu>

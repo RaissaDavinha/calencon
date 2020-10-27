@@ -1,5 +1,6 @@
 package com.example.calencon.presentation.login
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +16,10 @@ import kotlinx.android.synthetic.main.login_activity.*
 
 class LoginActivity : AppCompatActivity() {
     private var auth: FirebaseAuth = FirebaseAuth.getInstance()
+
+    companion object {
+        fun getStartIntent(context: Context): Intent = Intent(context, LoginActivity::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
