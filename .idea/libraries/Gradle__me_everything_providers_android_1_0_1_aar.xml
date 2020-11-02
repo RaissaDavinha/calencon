@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: me.everything:providers-android:1.0.1@aar">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f9d7149472d5e92f85a51ab3dff15719/jetified-providers-android-1.0.1/AndroidManifest.xml" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f9d7149472d5e92f85a51ab3dff15719/jetified-providers-android-1.0.1/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f9d7149472d5e92f85a51ab3dff15719/jetified-providers-android-1.0.1/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f9d7149472d5e92f85a51ab3dff15719/jetified-providers-android-1.0.1/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/me.everything/providers-android/1.0.1/1ad0085a25163c5404184526fc9c7fd2648aa88/providers-android-1.0.1-javadoc.jar!/" />

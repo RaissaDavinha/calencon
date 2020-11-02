@@ -20,11 +20,12 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.register_activity.*
 import me.everything.providers.android.calendar.CalendarProvider
+import java.lang.Exception
 import java.util.concurrent.TimeUnit
 
 class HomeActivity : AppCompatActivity() {
     var createGroupDialog: CreateGroupDialog? = null
-    private var selectedUri: Uri? = null
+    private var selectedUri: String? = null
     lateinit var calendarProvider: CalendarProvider
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,9 +85,9 @@ class HomeActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 20) {
-            selectedUri = data?.data
+            selectedUri = data?.data.toString()
             selectedUri?.let {
-                val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, it)
+                val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, Uri.parse(it))
                 photo_img.setImageBitmap(bitmap)
                 select_photo_button.visibility = View.GONE
             }
@@ -104,23 +105,25 @@ class HomeActivity : AppCompatActivity() {
                     calendarProvider = CalendarProvider(baseContext)
                     calendarProvider.calendars.list.forEach { calendar ->
                         calendarProvider.getEvents(calendar.id).list.forEach { event ->
-                            val item = Event(
-                                user_id = uid,
-                                calendar_id = calendar.id,
-                                dtstart = event.dTStart,
-                                dtend = event.dTend,
-                                title = event.title,
-                                duration = event.duration,
-                                all_day = event.allDay,
-                                rrule = event.rRule ?: "",
-                                rdate = event.rDate ?: "",
-                                availability = event.availability
-                            )
+                            try {
+                                val item = Event(
+                                    user_id = uid,
+                                    calendar_id = calendar.id,
+                                    dtstart = event.dTStart,
+                                    dtend = event.dTend,
+                                    title = event.title,
+                                    duration = event.duration,
+                                    all_day = event.allDay,
+                                    rrule = event.rRule ?: "",
+                                    rdate = event.rDate ?: "",
+                                    availability = event.availability
+                                )
 
-                            FirebaseFirestore.getInstance().collection(USERS_DOC)
-                                .document(uid)
-                                .collection(CALENDAR_DOC)
-                                .add(item)
+                                FirebaseFirestore.getInstance().collection(USERS_DOC)
+                                    .document(uid)
+                                    .collection(CALENDAR_DOC)
+                                    .add(item)
+                            } catch (exception: Exception) {}
                         }
                     }
                 }
