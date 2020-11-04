@@ -109,27 +109,27 @@ class DrawerManager(private val activity: HomeActivity,
             navigation.viewTreeObserver.addOnGlobalLayoutListener {
                 navigation.menu.apply {
                     findItem(R.id.action_history)?.actionView?.let {
-//                        it.icon.setImageResource(R.drawable.ic_clock)
-                        it.title.text = getString(R.string.menu_history)
-                        it.description.text = getString(R.string.menu_history_message)
+                        it.icon.setImageResource(R.drawable.ic_baseline_date_range_24)
+                        it.title.text = getString(R.string.menu_my_calendar)
+                        it.description.text = getString(R.string.menu_my_calendar_message)
                     }
                     findItem(R.id.action_help)?.actionView?.let {
-//                        it.icon.setImageResource(R.drawable.ic_question)
+                        it.icon.setImageResource(R.drawable.ic_baseline_help_outline_24)
                         it.title.text = it.context.getString(R.string.menu_help)
                         it.description.text = getString(R.string.menu_help_message)
                     }
                     findItem(R.id.action_feedback)?.actionView?.let {
-//                        it.icon.setImageResource(R.drawable.ic_feedback)
+                        it.icon.setImageResource(R.drawable.ic_baseline_feedback_24)
                         it.title.text = it.context.getString(R.string.menu_feedback)
                         it.description.text = getString(R.string.menu_feedback_message)
                     }
                     findItem(R.id.action_settings)?.actionView?.let {
-//                        it.icon.setImageResource(R.drawable.ic_settings)
+                        it.icon.setImageResource(R.drawable.ic_build_config)
                         it.title.text = it.context.getString(R.string.menu_settings)
                         it.description.text = getString(R.string.menu_settings_message)
                     }
                     findItem(R.id.action_logout)?.actionView?.let {
-//                        it.icon.setImageResource(R.drawable.ic_logout)
+                        it.icon.setImageResource(R.drawable.ic_exit)
                         it.title.text = it.context.getString(R.string.menu_logout)
                         it.description.visibility = View.GONE
                         it.separator.visibility = View.GONE
