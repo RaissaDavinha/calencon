@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: me.everything:providers-core:1.0.0@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d9956d0c973428c3abfd96dd1508fc0c/jetified-providers-core-1.0.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d9956d0c973428c3abfd96dd1508fc0c/jetified-providers-core-1.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d9956d0c973428c3abfd96dd1508fc0c/jetified-providers-core-1.0.0/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/41f89de153c1a316efa13cdf15496db6/transformed/jetified-providers-core-1.0.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/41f89de153c1a316efa13cdf15496db6/transformed/jetified-providers-core-1.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/41f89de153c1a316efa13cdf15496db6/transformed/jetified-providers-core-1.0.0/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/me.everything/providers-core/1.0.0/5640bb127ed187579b7d1b433fa0aee5ad19bded/providers-core-1.0.0-javadoc.jar!/" />

@@ -8,12 +8,15 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.calencon.R
 import com.example.calencon.data.IngressoDotComEvent
+import com.example.calencon.presentation.near_events.presenter.NearEventsPresenter
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.contacts_fragment.*
+import org.koin.android.ext.android.inject
 
-class NearEventsFragment : Fragment() {
+class NearEventsFragment : Fragment(), NearEventsInterface {
     private lateinit var eventsAdapter: GroupAdapter<ViewHolder>
+//    private val nearEventsPresenter: NearEventsPresenter by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,6 +29,7 @@ class NearEventsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setAdapter()
+//        nearEventsPresenter.getEvents()
         fetchEvents()
     }
 
@@ -50,6 +54,12 @@ class NearEventsFragment : Fragment() {
     companion object {
         fun newInstance(): NearEventsFragment {
             return NearEventsFragment()
+        }
+    }
+
+    override fun fetchEvents(eventList: List<IngressoDotComEvent>) {
+        for(i in eventList) {
+            eventsAdapter.add(NearEventsViewHolder(i))
         }
     }
 }

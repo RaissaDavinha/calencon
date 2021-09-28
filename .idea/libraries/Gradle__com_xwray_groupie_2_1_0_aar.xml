@@ -4,6 +4,14 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e933cb4eb91e8e627a8c35b65a63ee85/jetified-groupie-2.1.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e933cb4eb91e8e627a8c35b65a63ee85/jetified-groupie-2.1.0/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e933cb4eb91e8e627a8c35b65a63ee85/jetified-groupie-2.1.0/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c30a9bf2af676b0e3fe8029002b13182/jetified-groupie-2.1.0/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ed93391903f18bd786fd76b3e8d29af4/jetified-groupie-2.1.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ed93391903f18bd786fd76b3e8d29af4/jetified-groupie-2.1.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ed93391903f18bd786fd76b3e8d29af4/jetified-groupie-2.1.0/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/96e33f23109d5d96f1d5c08a0905233d/jetified-groupie-2.1.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/020f90152739359bb40c2925e3b9b7b1/transformed/jetified-groupie-2.1.0/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/020f90152739359bb40c2925e3b9b7b1/transformed/jetified-groupie-2.1.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/020f90152739359bb40c2925e3b9b7b1/transformed/jetified-groupie-2.1.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.xwray/groupie/2.1.0/6e24be3ddf6c9a4664b6ff3f91c3c3cf3ed564c6/groupie-2.1.0-javadoc.jar!/" />

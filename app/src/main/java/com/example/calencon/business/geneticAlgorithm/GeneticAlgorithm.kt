@@ -1,10 +1,6 @@
 package com.example.calencon.business.geneticAlgorithm
 
-import com.example.calencon.data.CALENDAR_DOC
 import com.example.calencon.data.Event
-import com.example.calencon.data.GROUP_DOC
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import java.time.LocalDate
 
 /*
@@ -28,9 +24,9 @@ Mutation typically works by making very small changes at random to an individual
 
 class GeneticAlgorithm {
     private val geneticAlgorithmCalc = GACalc()
-    private val populationSize = 100
+    private val populationSize = 500
     private val selectionSize = 80
-    private val mutationProbability = 100
+    private val mutationProbability = 80
     private var adaptationEnvironment = mutableListOf<Specimen>()
     private var currentPopulation = mutableListOf<Specimen>()
 
@@ -53,7 +49,7 @@ class GeneticAlgorithm {
     fun run(): Long {
         var currentSelection = mutableListOf<Specimen>()
         var currentProximity: Double
-        val maxIterations = 40
+        val maxIterations = 200
         val maxScore = 3.00
 
         for (i in 0..maxIterations) {

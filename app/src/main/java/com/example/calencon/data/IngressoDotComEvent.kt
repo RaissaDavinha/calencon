@@ -8,4 +8,4 @@ data class IngressoDotComEvent (val id: String = "", var title: String = "", val
 data class Images(val url: String, val type: String)
 
 data class IngressoDotComEventResponse(@SerializedName("items")
-                                 var EventsList: List<IngressoDotComEvent>? = null) : Serializable
+                                 var eventsList: List<IngressoDotComEvent>? = null) : Serializable

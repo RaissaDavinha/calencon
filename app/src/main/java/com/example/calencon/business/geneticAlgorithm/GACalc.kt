@@ -1,8 +1,10 @@
 package com.example.calencon.business.geneticAlgorithm
 
 import com.example.calencon.data.WeekScore
+import java.text.SimpleDateFormat
 import java.time.DayOfWeek
 import java.util.*
+import java.util.concurrent.ThreadLocalRandom
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random
 import kotlin.random.nextInt
@@ -108,7 +110,7 @@ class GACalc {
         return population
     }
 
-    // Generate only future dates, with hour between 8-21h, up tp 3 months in the future
+    // Generate only future dates, with hour between 8-20h, up tp 3 months in the future
     private fun createStartEvent(): Long {
         val aDay = TimeUnit.DAYS.toMillis(1)
         val now = Calendar.getInstance().timeInMillis
@@ -125,9 +127,13 @@ class GACalc {
     }
 
     private fun between(startInclusive: Calendar, endExclusive: Calendar): Long {
+        val sdf = SimpleDateFormat("dd-M-yyyy hh:mm:ss")
         val startYear = startInclusive.get(Calendar.YEAR)
         val endYear = endExclusive.get(Calendar.YEAR)
         val result = Calendar.getInstance()
+        var day: Int
+        var hour: Int
+        var minute: Int
 
         do {
             val randNumber = Random.nextInt(0..1)
@@ -137,13 +143,26 @@ class GACalc {
             val c = Calendar.getInstance()
             c.set(year, month, 0)
             val dayOfMonth = c.get(Calendar.DAY_OF_MONTH)
-            val day = (Math.random() * dayOfMonth).toInt() + 1
 
-            val hour = (Math.random() * 11).toInt() + 9
-            val minute = if (randNumber == 0) 0 else 30
+            if (randNumber == 0) {
+                day = (Math.random() * dayOfMonth).toInt() + 1
+                hour = (Math.random() * 11).toInt() + 9
+                minute = 0
+            } else {
+                day = ThreadLocalRandom
+                    .current()
+                    .nextInt(1, dayOfMonth)
+                hour = ThreadLocalRandom
+                    .current()
+                    .nextInt(8, 20)
+                minute = 30
+            }
 
-            result.set(year, month, day, hour, minute)
-        } while (result.timeInMillis < startInclusive.timeInMillis)
+            val dateString = "$day-$month-$year $hour:$minute:00"
+            val date = sdf.parse(dateString)
+
+            result.time = date
+        } while (result.timeInMillis <= startInclusive.timeInMillis)
 
         println(
             "Current_Selection " + result.get(Calendar.HOUR_OF_DAY) + ":" + result.get(
@@ -193,7 +212,7 @@ class GACalc {
         when (Random.nextInt(101)) {
             // 45%
             in (0..45) -> {
-                val hour = Random.nextInt(8..21)
+                val hour = Random.nextInt(8..20)
                 val minute = if (Random.nextInt(0..1) == 0) 0 else 30
                 a.setStartHour(hour, minute)
             }

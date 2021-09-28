@@ -16,6 +16,7 @@ import com.example.calencon.R
 import com.example.calencon.data.*
 import com.example.calencon.mechanics.DrawerManager
 import com.example.calencon.mechanics.now
+import com.example.calencon.presentation.contacts.UserItemViewHolder
 import com.example.calencon.presentation.group.AddContactsActivity
 import com.example.calencon.presentation.group.CreateGroupDialog
 import com.google.firebase.auth.FirebaseAuth
@@ -24,23 +25,27 @@ import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_home.view.*
 import kotlinx.android.synthetic.main.register_activity.*
 import me.everything.providers.android.calendar.CalendarProvider
+import java.util.*
+import java.util.concurrent.ThreadLocalRandom
 import java.util.concurrent.TimeUnit
+import kotlin.random.Random
+import kotlin.random.nextInt
 
 class HomeActivity : AppCompatActivity() {
     var createGroupDialog: CreateGroupDialog? = null
     private var selectedUri: String? = null
     lateinit var calendarProvider: CalendarProvider
+    private var auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private var user: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        getUser()
         setContentView(R.layout.activity_home)
+//        generateEvents()
         val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
         home_view_pager.adapter = sectionsPagerAdapter
         tabs.setupWithViewPager(home_view_pager)
-        val drawerManager = DrawerManager(this, User(name = "Rafael"))
-
-        drawerManager.setupDrawer()
 
         create_group_button.setOnClickListener {
             createGroup()
@@ -55,6 +60,22 @@ class HomeActivity : AppCompatActivity() {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_drawer, menu)
         return true
+    }
+
+    private fun getUser() {
+        val currentUser = auth.currentUser
+        currentUser?.let {currentUser ->
+            FirebaseFirestore.getInstance().collection(USERS_DOC)
+                .document(currentUser.uid)
+                .get()
+                .addOnSuccessListener { documentSnapshot ->
+                    user = documentSnapshot.toObject(User::class.java)
+                    user?.let {
+                        val drawerManager = DrawerManager(this, it)
+                        drawerManager.setupDrawer()
+                    }
+                }
+        }
     }
 
     private fun createGroup() {
@@ -141,5 +162,61 @@ class HomeActivity : AppCompatActivity() {
                 return
             }
         }
+    }
+
+    private fun generateEvents() {
+        val uid = FirebaseAuth.getInstance().uid!!
+
+        for (i in 0..30) {
+            val dtStart = createEventDatabase()
+
+            val item = Event(
+                user_id = uid,
+                calendar_id = 1,
+                dtstart = dtStart,
+                dtend = createEndEvent(dtStart),
+                title = "event " + i,
+                duration = null,
+                all_day = false,
+                rrule = "",
+                rdate = "",
+                availability = 0
+            )
+
+            FirebaseFirestore.getInstance().collection(USERS_DOC)
+                .document(uid)
+                .collection(CALENDAR_DOC)
+                .add(item)
+
+            println(item)
+        }
+    }
+
+    private fun createEventDatabase(): Long {
+        val aDay = TimeUnit.DAYS.toMillis(1)
+        val now = Date().time
+        val threeMonthsInFuture = Date(now + aDay * 92)
+        val tenDaysAgo = Date(now - aDay * 10)
+        return between(tenDaysAgo, threeMonthsInFuture)
+    }
+
+    private fun createEndEvent(startDate: Long): Long {
+        val aHour = TimeUnit.HOURS.toMillis(1)
+        return startDate + aHour
+    }
+
+    private fun between(startInclusive: Date, endExclusive: Date): Long {
+        val startMillis = startInclusive.time
+        val endMillis = endExclusive.time
+        val randNumber = Random.nextInt(0..1)
+
+        return if (randNumber == 0 ) {
+            ThreadLocalRandom
+                .current()
+                .nextLong(startMillis, endMillis)
+        } else {
+            (startMillis..endMillis).random()
+        }
+
     }
 }

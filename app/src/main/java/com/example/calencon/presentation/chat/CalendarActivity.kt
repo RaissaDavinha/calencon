@@ -149,23 +149,25 @@ class CalendarActivity : AppCompatActivity() {
 
     private fun getFirebaseData() {
         val firebase = FirebaseFirestore.getInstance()
-        firebase.collection(GROUP_DOC)
-            .document(chatId)
-            .collection(CALENDAR_DOC)
-            .orderBy("dtstart", Query.Direction.ASCENDING)
-            .addSnapshotListener { querySnapshot, error ->
-                error?.let {
-                    println("Erro ao puxar calendario de usuarios: $it")
-                    return@addSnapshotListener }
-                querySnapshot?.let {
-                    events.clear()
-                    for (doc in it) {
-                        val event = doc.toObject(Event::class.java)
-                        val date: LocalDate = Instant.ofEpochMilli(event.dtstart).atZone(ZoneId.systemDefault()).toLocalDate()
-                        events[date] = events[date].orEmpty().plus(event)
+        chatId?.let {
+            firebase.collection(GROUP_DOC)
+                .document(it)
+                .collection(CALENDAR_DOC)
+                .orderBy("dtstart", Query.Direction.ASCENDING)
+                .addSnapshotListener { querySnapshot, error ->
+                    error?.let {
+                        println("Erro ao puxar calendario de usuarios: $it")
+                        return@addSnapshotListener }
+                    querySnapshot?.let {
+                        events.clear()
+                        for (doc in it) {
+                            val event = doc.toObject(Event::class.java)
+                            val date: LocalDate = Instant.ofEpochMilli(event.dtstart).atZone(ZoneId.systemDefault()).toLocalDate()
+                            events[date] = events[date].orEmpty().plus(event)
+                        }
                     }
                 }
-            }
+        }
     }
 
     private fun setCalendarSetup() {

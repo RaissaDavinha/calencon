@@ -9,9 +9,11 @@ import com.example.calencon.data.User
 import com.example.calencon.presentation.base.BaseChoiceDialog
 import com.example.calencon.presentation.home.HomeActivity
 import com.example.calencon.presentation.login.LoginActivity
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_home.view.*
 import kotlinx.android.synthetic.main.drawer_item.view.*
+import kotlinx.android.synthetic.main.recycler_view_item.view.*
 import kotlinx.android.synthetic.main.view_drawer_header.view.*
 import kotlinx.android.synthetic.main.view_drawer_header.view.separator
 import org.koin.core.KoinComponent
@@ -68,7 +70,9 @@ class DrawerManager(private val activity: HomeActivity,
                 }
 
                 user.url.let {
-                    //todo put user image
+                    Picasso.get()
+                        .load(it)
+                        .into(header.profile_image)
                 }
             }
         }
@@ -93,6 +97,7 @@ class DrawerManager(private val activity: HomeActivity,
 
                     override fun onPositiveClickListener() {
 //                        userRepository.logout()
+                        //todo crashou
                         choiceDialog?.dismiss()
                         startActivity(LoginActivity.getStartIntent(baseContext).apply {
                             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_REORDER_TO_FRONT) })
