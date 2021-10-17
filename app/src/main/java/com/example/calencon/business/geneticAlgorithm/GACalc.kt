@@ -1,9 +1,11 @@
 package com.example.calencon.business.geneticAlgorithm
 
 import com.example.calencon.data.WeekScore
+import java.net.URL
 import java.text.SimpleDateFormat
 import java.time.DayOfWeek
 import java.util.*
+import java.util.concurrent.Executors
 import java.util.concurrent.ThreadLocalRandom
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random
@@ -33,7 +35,7 @@ class GACalc {
 
     fun fitnessScore(event: Specimen): Double {
         val weekDayScore: Double
-        var eventOverlapScore = 1.0
+        var eventOverlapScore = 2.0
         val environment = mutableListOf<Specimen>()
         val day = Calendar.getInstance()
 
@@ -46,7 +48,7 @@ class GACalc {
         if (!environment.isNullOrEmpty()) {
             environment.find { it.getDtStart() < event.getDtStart() }?.let {
                 if (it.getDtEnd() > event.getDtStart() && eventOverlapScore > 0) {
-                    eventOverlapScore -= 0.5
+                    eventOverlapScore -= 1.0
                 }
             }
 
@@ -54,7 +56,7 @@ class GACalc {
             val afterEvent =
                 environment.firstOrNull { it.getDtStart() > event.getDtStart() && it.getDtStart() < event.getDtEnd() }
             if (afterEvent != null) {
-                eventOverlapScore -= 0.5
+                eventOverlapScore -= 1.0
             }
         }
 
@@ -72,12 +74,12 @@ class GACalc {
             else -> 0.0
         }
 
-        return weekDayScore + eventOverlapScore * 2
+        return weekDayScore + eventOverlapScore
     }
 
     // Select the best specimens from the population
     fun selectBest(population: MutableList<Specimen>): List<Specimen> {
-        population.sortWith(compareByDescending { it.getFitnessScore() })
+        population.sortedWith(compareBy<Specimen> { it.getDtStart() }.thenByDescending {it.getFitnessScore()})
 
         return population.take(selectionSize)
     }
@@ -138,7 +140,7 @@ class GACalc {
         do {
             val randNumber = Random.nextInt(0..1)
             val year = (Math.random() * (endYear - startYear + 1)).toInt() + startYear
-            val month = (Math.random() * 12).toInt() + 1
+            val month = (Math.random() * 11).toInt()
 
             val c = Calendar.getInstance()
             c.set(year, month, 0)
@@ -146,7 +148,7 @@ class GACalc {
 
             if (randNumber == 0) {
                 day = (Math.random() * dayOfMonth).toInt() + 1
-                hour = (Math.random() * 11).toInt() + 9
+                hour = (Math.random() * 10).toInt() + 9
                 minute = 0
             } else {
                 day = ThreadLocalRandom
@@ -154,7 +156,7 @@ class GACalc {
                     .nextInt(1, dayOfMonth)
                 hour = ThreadLocalRandom
                     .current()
-                    .nextInt(8, 20)
+                    .nextInt(8, 19)
                 minute = 30
             }
 
@@ -210,31 +212,70 @@ class GACalc {
     private fun mutate(a: Specimen): Specimen {
 
         when (Random.nextInt(101)) {
-            // 45%
+            // 45% change hour and minute
             in (0..45) -> {
                 val hour = Random.nextInt(8..20)
                 val minute = if (Random.nextInt(0..1) == 0) 0 else 30
                 a.setStartHour(hour, minute)
             }
-            // 40%
+            // 40% change day
             in (46..85) -> {
-                val c = Calendar.getInstance()
-                c.set(a.getYear(), a.getMonth(), 0)
-                val dayOfMonth = c.get(Calendar.DAY_OF_MONTH)
-                val day = (Math.random() * dayOfMonth).toInt() + 1
-                a.setDay(day)
-            }
-            // 15%
-            in (86..100) -> {
-                val threeMonthsInFuture = Calendar.getInstance()
-                val aDay = TimeUnit.DAYS.toMillis(1)
-                val today = Calendar.getInstance()
-                val now = today.timeInMillis
-                threeMonthsInFuture.timeInMillis = (now + aDay * 92)
+                var again = false
 
-                val range = today.get(Calendar.MONTH) - threeMonthsInFuture.get(Calendar.MONTH)
-                val month = (Math.random() * range).toInt() + 1 + today.get(Calendar.MONTH)
-                a.setMonth(month)
+                do {
+                    val randNumber = Random.nextInt(0..1)
+                    val c = Calendar.getInstance()
+                    val today = Calendar.getInstance()
+                    c.set(a.getYear(), a.getMonth(), 0)
+                    val dayOfMonth = c.get(Calendar.DAY_OF_MONTH)
+
+                    val day = if (randNumber == 0) {
+                        (Math.random() * dayOfMonth).toInt() + 1
+                    } else {
+                        ThreadLocalRandom
+                            .current()
+                            .nextInt(1, dayOfMonth)
+                    }
+
+                    if(today.get(Calendar.MONTH) == a.getMonth()) {
+                        if (today.get(Calendar.DAY_OF_MONTH) >= day) {
+                            again = true
+                        } else {
+                            a.setDay(day)
+                            again = false
+                        }
+                    } else {
+                        a.setDay(day)
+                        again = false
+                    }
+
+                } while (again)
+            }
+            // 15% change month
+            in (86..100) -> {
+                var again: Boolean
+
+                do {
+                    val today = Calendar.getInstance()
+                    var month = (Math.random() * 2).toInt() + today.get(Calendar.MONTH)
+                    when (month) {
+                        12 -> month = 0
+                        13 -> month = 1
+                        14 -> month = 2
+                    }
+
+                    if(today.get(Calendar.MONTH) == month) {
+                        if (today.get(Calendar.DAY_OF_MONTH) >= a.getDay()) {
+                            again = true
+                        } else {
+                            a.setMonth(month)
+                            again = false
+                        }
+                    } else {
+                        a.setMonth(month)
+                        again = false
+                    }
+                } while (again)
             }
         }
 

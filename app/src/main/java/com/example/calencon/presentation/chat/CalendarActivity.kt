@@ -61,13 +61,13 @@ class CalendarActivity : AppCompatActivity() {
         setContentView(R.layout.calendar_activity)
         val today = LocalDate.now()
 
+        setRecyclerAdapter()
+        getFirebaseData()
+
         setCalendarSetup()
         calendarView.post {
             selectDate(today)
         }
-
-        setRecyclerAdapter()
-        getFirebaseData()
 
         topAppBar.setNavigationOnClickListener { finish() }
         topAppBar.setOnMenuItemClickListener { item: MenuItem? ->
@@ -132,11 +132,11 @@ class CalendarActivity : AppCompatActivity() {
             AlertDialog.Builder(it)
         }
 
+        progress_bar.visibility = View.GONE
         builder?.setMessage(getString(R.string.day_hour, currentDateFormat.format(calendar.time), currentTimeFormat.format(calendar.time)))
             ?.setTitle(R.string.best_data)
 
         builder?.create()?.show()
-        progress_bar.visibility = View.GONE
     }
 
     private fun updateAdapterForDate(date: LocalDate?) {

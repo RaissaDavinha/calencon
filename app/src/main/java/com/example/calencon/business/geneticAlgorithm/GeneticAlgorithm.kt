@@ -2,6 +2,7 @@ package com.example.calencon.business.geneticAlgorithm
 
 import com.example.calencon.data.Event
 import java.time.LocalDate
+import java.util.*
 
 /*
 The basic process for a genetic algorithm is:
@@ -24,9 +25,9 @@ Mutation typically works by making very small changes at random to an individual
 
 class GeneticAlgorithm {
     private val geneticAlgorithmCalc = GACalc()
-    private val populationSize = 500
-    private val selectionSize = 80
-    private val mutationProbability = 80
+    private val populationSize = 100
+    private val selectionSize = 50
+    private val mutationProbability = 50
     private var adaptationEnvironment = mutableListOf<Specimen>()
     private var currentPopulation = mutableListOf<Specimen>()
 
@@ -49,42 +50,45 @@ class GeneticAlgorithm {
     fun run(): Long {
         var currentSelection = mutableListOf<Specimen>()
         var currentProximity: Double
-        val maxIterations = 200
-        val maxScore = 3.00
+        val maxIterations = 100
+        val day = Calendar.getInstance()
+        val updatedSelection = mutableListOf<Specimen>()
 
         for (i in 0..maxIterations) {
             currentSelection = geneticAlgorithmCalc.selectBest(currentPopulation).toMutableList()
-            currentProximity = currentSelection[0].getFitnessScore()
+//            currentProximity = currentSelection[0].getFitnessScore()
 
-            println("Current_Iteration " + i + "\t" +
-                        "Current_Proximity " + currentProximity + "\t" +
-                        "Current_Selection " + currentSelection[0].getHour() + ":" + currentSelection[0].getMinutes() + "\t" + currentSelection[0].getDay() + "/" + currentSelection[0].getMonth()
-            )
-
-//            if (currentProximity == maxScore) break
+//            println("Current_Iteration " + i + "\t" +
+//                        "Current_Proximity " + currentProximity + "\t" +
+//                        "Current_Selection " + currentSelection[0].getHour() + ":" + currentSelection[0].getMinutes() + "\t" + currentSelection[0].getDay() + "/" + currentSelection[0].getMonth()
+//            )
 
             currentPopulation = geneticAlgorithmCalc.generate(currentSelection)
         }
 
+        //ignora todos os eventos antes da data atual
+        updatedSelection.addAll(currentSelection.takeLastWhile { it.getDtStart() > day.timeInMillis })
+
         //adicionar proximmidade do evento ao calculo
-        currentSelection.sortWith(compareBy { it.getDtStart() })
-        for (i in 0..5) {
-            currentSelection[i].addFitnessScore(0.25)
+        updatedSelection.sortWith(compareBy { it.getDtStart() })
+        for (i in 0..2) {
+            updatedSelection[i].addFitnessScore(1.5)
         }
-        currentProximity = currentSelection[0].getFitnessScore()
+        currentProximity = updatedSelection[0].getFitnessScore()
 
         println("Current_Proximity " + currentProximity + "\t" +
-                "Current_Selection " + currentSelection[0].getHour() + ":" + currentSelection[0].getMinutes() + "\t" + currentSelection[0].getDay() + "/" + currentSelection[0].getMonth()
+                "Current_Selection " + updatedSelection[0].getHour() + ":" + updatedSelection[0].getMinutes() + "\t" + updatedSelection[0].getDay() + "/" + updatedSelection[0].getMonth()
         )
 
-        currentSelection.sortWith(compareByDescending { it.getFitnessScore() })
+        //ordena pelo fitness score
+        updatedSelection.sortWith(compareByDescending { it.getFitnessScore() })
 
-        currentProximity = currentSelection[0].getFitnessScore()
+        currentProximity = updatedSelection[0].getFitnessScore()
 
-        println("Current_Proximity " + currentProximity + "\t" +
-                "Current_Selection " + currentSelection[0].getHour() + ":" + currentSelection[0].getMinutes() + "\t" + currentSelection[0].getDay() + "/" + currentSelection[0].getMonth()
+        println("The chosen one: \n Current_Proximity " + currentProximity + "\t" +
+                "Current_Selection " + updatedSelection[0].getHour() + ":" + updatedSelection[0].getMinutes() + "\t" + updatedSelection[0].getDay() + "/" + updatedSelection[0].getMonth()
         )
 
-        return currentSelection[0].getDtStart()
+        return updatedSelection[0].getDtStart()
     }
 }
